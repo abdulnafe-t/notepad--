@@ -5,18 +5,16 @@
 Notepad-- is a minimalist, featureless text editor. It supports the most basic text
 navigation and editing actions, and nothing else. Currently, it only supports ASCII text.
 
-TODO:
+* TODO:
+- [X] left/right cursor motions
+- [ ] up/down cursor motions
+- [ ] refactor main()
+- [ ] scrollbars
+- [ ] cut, copy, paste
+- [ ] open/save file
+- [ ] search & replace
 
-- [x] left/right cursor motions
-- [] up/down cursor motions
-- [] refactor main()
-- [] scrollbars
-- [] cut, copy, paste
-- [] open/save file
-- [] search & replace
-
-Long term:
-
-- [] light/dark mode switching
-- [] smart buffering of larger files
-- [] unicode support?
+* Long term:
+- [ ] light/dark mode switching
+- [ ] smart buffering of larger files
+- [ ] unicode support?
