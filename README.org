@@ -8,7 +8,7 @@ navigation and editing actions, and nothing else. Currently, it only supports AS
 * TODO:
 - [X] left/right cursor motions
 - [X] up/down cursor motions
-- [ ] add build system
+- [X] add build system
 - [ ] refactor main()
 - [ ] scroll-bars
 - [ ] cut, copy, paste
