@@ -57,6 +57,10 @@ void File_io::backwards_delete_letter() {
       this->gap_buffer.grow_gap(-1);
 }
 
+void File_io::forwards_delete_char() {
+      this->gap_buffer.grow_gap(1);
+}
+
 std::string File_io::get_text() const {
       std::string text_content;
 

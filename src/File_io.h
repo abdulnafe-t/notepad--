@@ -35,6 +35,7 @@ public:
       std::string get_file_name() const;
 
       void backwards_delete_letter();
+      void forwards_delete_char();
 
       std::string get_text() const;
 

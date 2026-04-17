@@ -353,6 +353,10 @@ int main() {
                                           GUI::cursor.set_column(0);
                                           break;
                                     }
+
+                                    case SDLK_DELETE: {
+                                          file.forwards_delete_char();
+                                    }
                                     }
                               }
                               }
