@@ -12,6 +12,10 @@ add_executable(notepad--
   File_io.cpp
   File_io.h
   Gap_buffer.h
+  GUI.cpp
+  GUI.h
+  Keys.cpp
+  Keys.h
   main.cpp)
 
 target_link_libraries(notepad-- SDL3 SDL3_ttf)
