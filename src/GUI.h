@@ -20,7 +20,7 @@ namespace GUI {
       extern Cursor        cursor;
       extern int           window_height;
       extern int           window_width;
-      extern int           col_count;
+     
 }
 
 #endif

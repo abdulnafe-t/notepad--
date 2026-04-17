@@ -29,7 +29,7 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
             }
 
             file.backwards_delete_letter();
-            GUI::cursor.set_column((GUI::cursor.get_column() - 1) % GUI::col_count);
+            GUI::cursor.set_column((GUI::cursor.get_column() - 1));
 
             break;
       }
@@ -56,7 +56,7 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
                   break;
             }
 
-            GUI::cursor.set_column((GUI::cursor.get_column() - 1) % GUI::col_count);
+            GUI::cursor.set_column((GUI::cursor.get_column() - 1));
 
             break;
       }
@@ -69,14 +69,7 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
                   break;
             }
 
-            if (GUI::cursor.get_column() == GUI::col_count - 1) {
-                  GUI::cursor.set_column(0);
-                  GUI::cursor.set_row((GUI::cursor.get_row() + 1));
-                  file.move(1);
-                  break;
-            }
-
-            GUI::cursor.set_column((GUI::cursor.get_column() + 1) % GUI::col_count);
+            GUI::cursor.set_column((GUI::cursor.get_column() + 1));
             file.move(1);
             break;
       }

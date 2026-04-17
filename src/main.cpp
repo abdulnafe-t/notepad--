@@ -134,9 +134,9 @@ int main() {
                         SDL_GetWindowSize(GUI::window, &GUI::window_width,
                                           &GUI::window_height);
 
+ 
                         while (SDL_PollEvent(&event)) {
 
-                              GUI::col_count = GUI::window_width / GUI::advance;
                               switch (event.type) {
                               case SDL_EVENT_QUIT: {
                                     running = false;
@@ -152,7 +152,7 @@ int main() {
                                     static_cast<char>(event.text.text[0])};
                                     file.insert_letter(first_char);
                                     GUI::cursor.set_column(
-                                    (GUI::cursor.get_column() + 1) % GUI::col_count);
+                                    (GUI::cursor.get_column() + 1));
 
                                     break;
                               }
