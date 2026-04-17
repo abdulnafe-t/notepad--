@@ -23,35 +23,30 @@ bool init() {
                           SDL_GetError());
                   success = false;
             }
-      }
-      return success;
-}
 
-bool initialize_text() {
-
-      bool success {true};
-
-      if (!TTF_Init()) {
-            SDL_Log("init(): failed to initialize TTF. SDL error: %s\n", SDL_GetError());
-            success = false;
-      }
-      else {
-
-            std::string font_path {"/home/scion/.local/share/fonts/GeistMonoNerd/"
-                                   "GeistMonoNerdFontMono-Regular.otf"};
-
-            if (GUI::font = TTF_OpenFont(font_path.c_str(), GUI::font_size);
-                GUI::font == nullptr) {
-                  SDL_Log("Could not load %s! SDL_ttf Error: %s\n", font_path.c_str(),
+            if (!TTF_Init()) {
+                  SDL_Log("init(): failed to initialize TTF. SDL error: %s\n",
                           SDL_GetError());
                   success = false;
             }
             else {
-                  TTF_GetGlyphMetrics(GUI::font, 'T', nullptr, nullptr, nullptr, nullptr,
-                                      &GUI::advance);
 
-                  GUI::cursor.set_width(GUI::advance);
-                  GUI::cursor.set_height(TTF_GetFontHeight(GUI::font));
+                  std::string font_path {"/home/scion/.local/share/fonts/GeistMonoNerd/"
+                                         "GeistMonoNerdFontMono-Regular.otf"};
+
+                  if (GUI::font = TTF_OpenFont(font_path.c_str(), GUI::font_size);
+                      GUI::font == nullptr) {
+                        SDL_Log("Could not load %s! SDL_ttf Error: %s\n",
+                                font_path.c_str(), SDL_GetError());
+                        success = false;
+                  }
+                  else {
+                        TTF_GetGlyphMetrics(GUI::font, 'T', nullptr, nullptr, nullptr,
+                                            nullptr, &GUI::advance);
+
+                        GUI::cursor.set_width(GUI::advance);
+                        GUI::cursor.set_height(TTF_GetFontHeight(GUI::font));
+                  }
             }
       }
       return success;
@@ -84,7 +79,6 @@ int main() {
       int  return_code {0};
 
       init();
-      initialize_text();
 
       File_io     file {"/home/scion/Projects/Notepad--/testfile.txt", 1000};
       std::size_t file_size {file.get_filesize()};
@@ -134,7 +128,6 @@ int main() {
                         SDL_GetWindowSize(GUI::window, &GUI::window_width,
                                           &GUI::window_height);
 
- 
                         while (SDL_PollEvent(&event)) {
 
                               switch (event.type) {
