@@ -123,8 +123,7 @@ int main() {
 
       /* if (file_size > 0)*/
       if (GUI::surface = TTF_RenderText_Blended_Wrapped(
-          GUI::font, file.get_text().data(), file.get_text().size(), GUI::text_color,
-          GUI::window_width - GUI::advance);
+          GUI::font, file.get_text().data(), file.get_text().size(), GUI::text_color, 0);
 
           GUI::surface == nullptr) {
             SDL_Log("Could not create text surface! SDL error: %s\n", SDL_GetError());
@@ -282,14 +281,20 @@ int main() {
                                                 break;
                                           }
 
-                                          file.move(-GUI::cursor.get_column() - 1);
+                                          file.move(-GUI::cursor.get_column() -
+                                                    1); /* Move back to the end of the
+                                                           previous line */
 
                                           std::size_t cursor_position_in_buffer {
                                           file.get_cursor_position()};
 
                                           if (file.get_line_size(
                                               cursor_position_in_buffer) >
-                                              GUI::cursor.get_column()) {
+                                              GUI::cursor
+                                              .get_column()) { /* The previous line
+                                                                  extends farther than the
+                                                                  horizontal position of
+                                                                  the (visible) cursor */
                                                 file.move(
                                                 -static_cast<int>(file.get_line_size(
                                                 cursor_position_in_buffer)) +
@@ -309,28 +314,32 @@ int main() {
                                           std::size_t cursor_position_in_buffer {
                                           file.get_cursor_position()};
 
+                                          std::size_t line_size {
+                                          file.get_line_size(cursor_position_in_buffer)};
+
                                           file.move(
-                                          file.get_line_size(cursor_position_in_buffer) -
-                                          GUI::cursor.get_column());
+                                          line_size - GUI::cursor.get_column() +
+                                          1); /* Move to beginning of next line */
 
                                           std::size_t new_cursor_position_in_buffer {
                                           file.get_cursor_position()};
 
-                                          if (file.get_line_size(
-                                              new_cursor_position_in_buffer) <
-                                              GUI::cursor.get_column()) {
-                                                file.move(file.get_line_size(
-                                                          new_cursor_position_in_buffer) -
-                                                          1);
+                                          std::size_t new_line_size {file.get_line_size(
+                                          new_cursor_position_in_buffer)};
 
-                                                file.insert_letter('$');
+                                          if (new_line_size <
+                                              GUI::cursor
+                                              .get_column()) { /* The next line doesn't
+                                                                  extend as far as the
+                                                                  current position of the
+                                                                  (visible) cursor*/
+                                                file.move(new_line_size);
 
-                                                GUI::cursor.set_column(file.get_line_size(
-                                                new_cursor_position_in_buffer));
+                                                GUI::cursor.set_column(new_line_size);
                                           }
 
                                           else {
-                                                file.move(GUI::cursor.get_column() + 1);
+                                                file.move(GUI::cursor.get_column());
                                           }
 
                                           GUI::cursor.set_row(GUI::cursor.get_row() + 1);
@@ -351,7 +360,7 @@ int main() {
                               SDL_DestroyTexture(GUI::texture);
                               GUI::surface = TTF_RenderText_Blended_Wrapped(
                               GUI::font, file.get_text().data(), file.get_text().size(),
-                              GUI::text_color, GUI::window_width);
+                              GUI::text_color, 0);
 
                               if (GUI::surface != nullptr) {
                                     GUI::texture = SDL_CreateTextureFromSurface(
@@ -360,7 +369,7 @@ int main() {
 
                               else {
                                     GUI::surface = TTF_RenderText_Blended_Wrapped(
-                                    GUI::font, "", 0, GUI::text_color, GUI::window_width);
+                                    GUI::font, "", 0, GUI::text_color, 0);
                                     GUI::texture = SDL_CreateTextureFromSurface(
                                     GUI::renderer, GUI::surface);
                               }

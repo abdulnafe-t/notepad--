@@ -1,15 +1,16 @@
 #+title: notepad--: A featureless text editor
 #+author: Abdulnafé Toulaïmat
-#+language: en
+#+language: en_US
 
 Notepad-- is a minimalist, featureless text editor. It supports the most basic text
 navigation and editing actions, and nothing else. Currently, it only supports ASCII text.
 
 * TODO:
 - [X] left/right cursor motions
-- [ ] up/down cursor motions
+- [X] up/down cursor motions
+- [ ] add build system
 - [ ] refactor main()
-- [ ] scrollbars
+- [ ] scroll-bars
 - [ ] cut, copy, paste
 - [ ] open/save file
 - [ ] search & replace
