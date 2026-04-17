@@ -3,34 +3,9 @@
 #include <SDL3/SDL_main.h>
 #include <SDL3_ttf/SDL_ttf.h>
 
-#include "Cursor.h"
 #include "File_io.h"
+#include "GUI.h"
 #include "Gap_buffer.h"
-
-namespace GUI {
-      static constexpr int font_size {30};
-      static SDL_Window*   window;
-      static SDL_Renderer* renderer;
-      static SDL_Texture*  texture;
-      static TTF_Font*     font;
-      static int           advance;
-      static SDL_Surface*  surface;
-      static SDL_Color text_color = {.r {255}, .g {255}, .b {255}, .a {SDL_ALPHA_OPAQUE}};
-      static SDL_Color background_color = {.r {0}, .g {0}, .b {0}, .a {SDL_ALPHA_OPAQUE}};
-      static Cursor    cursor {
-      0,
-      0,
-      static_cast<float>(font_size / 2),
-      font_size,
-      text_color.r,
-      0,
-      text_color.b,
-      text_color.a,
-      };
-
-      static int window_height {600};
-      static int window_width {800};
-}
 
 bool init() {
       bool success {true};
@@ -158,10 +133,9 @@ int main() {
                         SDL_GetWindowSize(GUI::window, &GUI::window_width,
                                           &GUI::window_height);
 
-                        while (SDL_PollEvent(&event)) {
+                        GUI::col_count = GUI::window_width / GUI::advance;
 
-                              int   col_count {GUI::window_width / GUI::advance};
-                              float font_size_px {GUI::font_size * 96 / 72};
+                        while (SDL_PollEvent(&event)) {
 
                               switch (event.type) {
                               case SDL_EVENT_QUIT: {
@@ -178,7 +152,7 @@ int main() {
                                     static_cast<char>(event.text.text[0])};
                                     file.insert_letter(first_char);
                                     GUI::cursor.set_column(
-                                    (GUI::cursor.get_column() + 1) % col_count);
+                                    (GUI::cursor.get_column() + 1) % GUI::col_count);
 
                                     break;
                               }
@@ -215,7 +189,8 @@ int main() {
 
                                           file.backwards_delete_letter();
                                           GUI::cursor.set_column(
-                                          (GUI::cursor.get_column() - 1) % col_count);
+                                          (GUI::cursor.get_column() - 1) %
+                                          GUI::col_count);
 
                                           break;
                                     }
@@ -248,7 +223,8 @@ int main() {
                                           }
 
                                           GUI::cursor.set_column(
-                                          (GUI::cursor.get_column() - 1) % col_count);
+                                          (GUI::cursor.get_column() - 1) %
+                                          GUI::col_count);
 
                                           break;
                                     }
@@ -262,7 +238,8 @@ int main() {
                                                 break;
                                           }
 
-                                          if (GUI::cursor.get_column() == col_count - 1) {
+                                          if (GUI::cursor.get_column() ==
+                                              GUI::col_count - 1) {
                                                 GUI::cursor.set_column(0);
                                                 GUI::cursor.set_row(
                                                 (GUI::cursor.get_row() + 1));
@@ -271,7 +248,8 @@ int main() {
                                           }
 
                                           GUI::cursor.set_column(
-                                          (GUI::cursor.get_column() + 1) % col_count);
+                                          (GUI::cursor.get_column() + 1) %
+                                          GUI::col_count);
                                           file.move(1);
                                           break;
                                     }
