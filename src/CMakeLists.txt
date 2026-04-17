@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 4.3.1)
 
-project(Notepad-- VERSION 0.1 DESCRIPTION "A featureless text editor" LANGUAGES CXX)
+project(Notepad-- VERSION 0.1 DESCRIPTION "A featureless text editor" LANGUAGES C CXX)
 
 add_executable(notepad--
   main.cpp
