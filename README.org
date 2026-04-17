@@ -2,7 +2,7 @@
 #+author: Abdulnafé Toulaïmat
 #+language: en_US
 
-Notepad-- is a minimalist, featureless text editor. It supports the most basic text
+notepad-- is a minimalist, featureless text editor. It supports the most basic text
 navigation and editing actions, and nothing else. Currently, it only supports ASCII text.
 
 * TODO:

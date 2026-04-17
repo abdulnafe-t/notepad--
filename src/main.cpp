@@ -191,7 +191,6 @@ int main() {
 
                               SDL_RenderPresent(GUI::renderer);
 
-                              SDL_SetTextInputArea(GUI::window, &input_area, 0);
                         }
                   }
             }
