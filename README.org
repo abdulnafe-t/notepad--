@@ -10,12 +10,18 @@ navigation and editing actions, and nothing else. Currently, it only supports AS
 - [X] up/down cursor motions
 - [X] add build system
 - [ ] refactor main()
-- [ ] scroll-bars
-- [ ] cut, copy, paste
-- [ ] open/save file
-- [ ] search & replace
+- [ ] stop cursor motion at EOF
+- [ ] implement cut, copy, & paste
+  - [ ] implement mark
+  - [ ] implement shift+arrow selection to activate the mark
+  - [ ] implement text overwriting if the mark is active
+  - [ ] implement C-x, C-c, C-v
+- [ ] implement scroll-bars
+- [ ] implement opening/saving file
+- [ ] implement search & replace
 
 * Long term:
 - [ ] light/dark mode switching
 - [ ] smart buffering of larger files
 - [ ] unicode support?
+- [ ] emacs-style keybindings
