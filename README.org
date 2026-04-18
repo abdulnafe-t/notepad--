@@ -19,6 +19,7 @@ navigation and editing actions, and nothing else. Currently, it only supports AS
 - [ ] implement scroll-bars
 - [ ] implement opening/saving file
 - [ ] implement search & replace
+- [ ] use system font
 
 * Long term:
 - [ ] light/dark mode switching
