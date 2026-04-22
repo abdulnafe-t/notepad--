@@ -11,8 +11,8 @@ private:
       int       column {};
       int       row {};
 
-
 public:
+      Cursor() = default;
       Cursor(int column, int row, float w, float h, Uint8 r = 0xFF, Uint8 g = 0xFF,
              Uint8 b = 0xFF, Uint8 a = 0xFF);
 
