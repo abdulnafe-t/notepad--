@@ -17,6 +17,9 @@ private:
       std::size_t    first_empty_char {0};  // Inclusive
       std::size_t    last_empty_char {299}; // Inclusive
 
+      int mark {-1}; // Where the beginning of the active region (aka the mark) is. -1
+                     // means there is no active region.
+
 public:
       Gap_buffer(std::size_t buffer_size, char initial = '\0');
 
@@ -32,6 +35,10 @@ public:
       void move_gap(std::size_t position);
 
       void grow_gap(int amount);
+
+      [[nodiscard]] int get_mark() const;
+
+      void set_mark(int new_mark);
 
       [[nodiscard]] std::size_t get_buffer_size() const;
       [[nodiscard]] std::size_t get_line_size(std::size_t cursor_position) const;
@@ -124,6 +131,15 @@ void Gap_buffer<T>::move_gap(std::size_t position) {
             --this->last_empty_char;
             --this->first_empty_char;
       }
+}
+template<typename T>
+int Gap_buffer<T>::get_mark() const {
+      return this->mark;
+}
+
+template<typename T>
+void Gap_buffer<T>::set_mark(int new_mark) {
+      this->mark = new_mark;
 }
 
 template<typename T>

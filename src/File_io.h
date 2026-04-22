@@ -48,6 +48,10 @@ public:
       std::size_t get_cursor_position() const;
 
       std::size_t get_line_size(std::size_t cursor_position) const;
+
+      int get_mark() const;
+
+      void set_mark(int new_mark);
 };
 
 #endif

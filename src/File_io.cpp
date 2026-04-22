@@ -109,3 +109,11 @@ char File_io::get_current_char() const {
 std::size_t File_io::get_line_size(std::size_t cursor_position) const {
       return gap_buffer.get_line_size(cursor_position);
 }
+
+int File_io::get_mark() const {
+      return this->gap_buffer.get_mark();
+}
+
+void File_io::set_mark(int new_mark) {
+      this->gap_buffer.set_mark(new_mark);
+};
