@@ -1,5 +1,7 @@
 #include "Keys.h"
 
+#include <SDL3/SDL_keyboard.h>
+
 #include "GUI.h"
 
 bool Keys::handle_key(SDL_Keycode key, File_io& file) {
@@ -10,6 +12,8 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
             if (GUI::cursor.get_column() <= 0 && GUI::cursor.get_row() <= 0) {
                   break;
             }
+
+            int mark {file.get_mark()};
 
             if (GUI::cursor.get_column() <= 0 && GUI::cursor.get_row() > 0) {
 
@@ -43,6 +47,19 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
                   break;
             }
 
+            if (SDL_GetModState() &
+                (SDL_KMOD_LSHIFT |
+                 SDL_KMOD_RSHIFT)) { // The user is trying to highlight text.
+
+                  if (file.get_mark() < 0) {
+                        file.set_mark(static_cast<int>(file.get_cursor_position()));
+                  }
+            }
+
+            else {
+                  file.set_mark(-1);
+            }
+
             file.move(-1);
 
             if (GUI::cursor.get_column() <= 0 && GUI::cursor.get_row() > 0) {
@@ -62,6 +79,20 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
       }
 
       case SDLK_RIGHT: {
+
+            if (SDL_GetModState() &
+                (SDL_KMOD_LSHIFT |
+                 SDL_KMOD_RSHIFT)) { // The user is trying to highlight text.
+
+                  if (file.get_mark() < 0) {
+                        file.set_mark(static_cast<int>(file.get_cursor_position()));
+                  }
+            }
+
+            else {
+                  file.set_mark(-1);
+            }
+
             if (file.get_current_char() == '\n') {
                   GUI::cursor.set_row(GUI::cursor.get_row() + 1);
                   GUI::cursor.set_column(0);
@@ -77,6 +108,19 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
       case SDLK_UP: {
             if (GUI::cursor.get_row() == 0) {
                   break;
+            }
+
+            if (SDL_GetModState() &
+                (SDL_KMOD_LSHIFT |
+                 SDL_KMOD_RSHIFT)) { // The user is trying to highlight text.
+
+                  if (file.get_mark() < 0) {
+                        file.set_mark(static_cast<int>(file.get_cursor_position()));
+                  }
+            }
+
+            else {
+                  file.set_mark(-1);
             }
 
             file.move(-GUI::cursor.get_column() - 1); /* Move back to the end of the
@@ -103,6 +147,20 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
       }
 
       case SDLK_DOWN: {
+
+            if (SDL_GetModState() &
+                (SDL_KMOD_LSHIFT |
+                 SDL_KMOD_RSHIFT)) { // The user is trying to highlight text.
+
+                  if (file.get_mark() < 0) {
+                        file.set_mark(static_cast<int>(file.get_cursor_position()));
+                  }
+            }
+
+            else {
+                  file.set_mark(-1);
+            }
+
             std::size_t cursor_position_in_buffer {file.get_cursor_position()};
 
             std::size_t line_size {file.get_line_size(cursor_position_in_buffer)};
