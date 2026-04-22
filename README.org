@@ -9,10 +9,10 @@ navigation and editing actions, and nothing else. Currently, it only supports AS
 - [X] left/right cursor motions
 - [X] up/down cursor motions
 - [X] add build system
-- [ ] refactor main()
+- [X] refactor main()
 - [ ] stop cursor motion at EOF
-- [ ] implement cut, copy, & paste
-  - [ ] implement mark
+- [-] implement cut, copy, & paste
+  - [X] implement mark
   - [ ] implement shift+arrow selection to activate the mark
   - [ ] implement text overwriting if the mark is active
   - [ ] implement C-x, C-c, C-v
