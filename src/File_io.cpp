@@ -83,7 +83,16 @@ std::string File_io::get_text() const {
 }
 
 void File_io::move(int amount) {
-      this->gap_buffer.move_gap(this->gap_buffer.get_gap_begin() + amount);
+      std::size_t target {};
+      if (amount >= 0) {
+            target = this->gap_buffer.get_gap_begin() + static_cast<std::size_t>(amount);
+      }
+      else {
+            target =
+            this->gap_buffer.get_gap_begin() - static_cast<std::size_t>(std::abs(amount));
+      }
+
+      this->gap_buffer.move_gap(target);
 }
 
 std::size_t File_io::get_filesize() const {

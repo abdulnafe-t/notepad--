@@ -151,7 +151,7 @@ void Gap_buffer<T>::grow_gap(int amount) {
 
       if (amount < 0) {
             if (std::abs(amount) <= this->first_empty_char) {
-                  this->first_empty_char += amount;
+                  this->first_empty_char -= static_cast<std::size_t>(std::abs(amount));
                   this->buffer[first_empty_char] = '\0';
             }
             else {
@@ -162,7 +162,7 @@ void Gap_buffer<T>::grow_gap(int amount) {
       if (amount > 0) {
             if (static_cast<std::size_t>(amount) <
                 this->get_buffer_size() - this->last_empty_char) {
-                  this->last_empty_char += amount;
+                  this->last_empty_char += static_cast<std::size_t>(amount);
                   this->buffer[last_empty_char] = '\0';
             }
             else {
@@ -188,7 +188,7 @@ int Gap_buffer<T>::get_line_size(std::size_t cursor_position) const {
 
       if (cursor_position > 0) {
             for (int index {static_cast<int>(cursor_position) - 1}; index >= 0; --index) {
-                  T elt {buffer[index]};
+                  T elt {buffer[static_cast<std::size_t>(index)]};
                   if (elt == '\0') {
                         continue;
                   }
