@@ -1,10 +1,10 @@
 #include "File_io.h"
 
+#include "Gap_buffer.h"
+
 #include <cstdio>
 #include <fstream>
 #include <stdexcept>
-
-#include "Gap_buffer.h"
 
 File_io::File_io(const std::string& file_name, std::size_t buffer_size)
   : gap_buffer {Gap_buffer<char>(buffer_size)}

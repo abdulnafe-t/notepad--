@@ -1,10 +1,10 @@
 #ifndef GUI_H
 #define GUI_H
 
+#include "Cursor.h"
+
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
-
-#include "Cursor.h"
 
 namespace GUI {
       extern int           font_size;

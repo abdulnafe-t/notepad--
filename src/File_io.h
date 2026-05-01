@@ -1,11 +1,11 @@
 #ifndef FILE_IO_H
 #define FILE_IO_H
 
+#include "Gap_buffer.h"
+
 #include <cstdio>
 #include <fstream>
 #include <string>
-
-#include "Gap_buffer.h"
 
 class File_io {
 private:

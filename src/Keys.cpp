@@ -1,8 +1,8 @@
 #include "Keys.h"
 
-#include <SDL3/SDL_keyboard.h>
-
 #include "GUI.h"
+
+#include <SDL3/SDL_keyboard.h>
 
 bool Keys::handle_key(SDL_Keycode key, File_io& file) {
 

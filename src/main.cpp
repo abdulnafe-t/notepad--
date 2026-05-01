@@ -1,13 +1,13 @@
+#include "File_io.h"
+#include "GUI.h"
+#include "Gap_buffer.h"
+#include "Keys.h"
+
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_keyboard.h>
 #include <SDL3/SDL_main.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <string>
-
-#include "File_io.h"
-#include "GUI.h"
-#include "Gap_buffer.h"
-#include "Keys.h"
 
 bool init() {
 
@@ -97,6 +97,7 @@ int main() {
       }
 
       if (GUI::texture = SDL_CreateTextureFromSurface(GUI::renderer, GUI::surface);
+
           GUI::texture == nullptr) {
             SDL_Log("Could not create texture from text surface! SDL error: %s\n",
                     SDL_GetError());
