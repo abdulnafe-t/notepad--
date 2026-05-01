@@ -106,7 +106,7 @@ char File_io::get_current_char() const {
       return gap_buffer.buffer[get_cursor_position()];
 }
 
-std::size_t File_io::get_line_size(std::size_t cursor_position) const {
+int File_io::get_line_size(std::size_t cursor_position) const {
       return gap_buffer.get_line_size(cursor_position);
 }
 

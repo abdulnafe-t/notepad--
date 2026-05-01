@@ -163,14 +163,14 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
 
             std::size_t cursor_position_in_buffer {file.get_cursor_position()};
 
-            std::size_t line_size {file.get_line_size(cursor_position_in_buffer)};
+            int line_size {file.get_line_size(cursor_position_in_buffer)};
 
             file.move(line_size - GUI::cursor.get_column() +
                       1); /* Move to beginning of next line */
 
             std::size_t new_cursor_position_in_buffer {file.get_cursor_position()};
 
-            std::size_t new_line_size {file.get_line_size(new_cursor_position_in_buffer)};
+            int new_line_size {file.get_line_size(new_cursor_position_in_buffer)};
 
             if (new_line_size < GUI::cursor.get_column()) { /* The next line doesn't
                                                                extend as far as the

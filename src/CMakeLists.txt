@@ -2,9 +2,13 @@ cmake_minimum_required(VERSION 4.3.1)
 
 project(Notepad-- VERSION 0.1 DESCRIPTION "A featureless text editor" LANGUAGES C CXX)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED On)
 set(CMAKE_CXX_EXTENSIONS Off)
+
+add_compile_options(-pedantic-errors -Werror -Wshadow -Wall -Weffc++ -Wextra -Wconversion -O0 -Wno-braced-scalar-init)
 
 add_executable(notepad--
   Cursor.cpp
@@ -18,5 +22,4 @@ add_executable(notepad--
   Keys.h
   main.cpp)
 
-add_compile_options(-pedantic-errors -Werror -Wshadow -Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion -O0 -Wno-braced-scalar-init)
 target_link_libraries(notepad-- SDL3 SDL3_ttf)

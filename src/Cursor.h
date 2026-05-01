@@ -12,7 +12,7 @@ private:
 
 public:
       Cursor() = default;
-      Cursor(int column, int row, float w, float h, Uint8 r = 0xFF, Uint8 g = 0xFF,
+      Cursor(int x, int y, float w, float h, Uint8 r = 0xFF, Uint8 g = 0xFF,
              Uint8 b = 0xFF, Uint8 a = 0xFF);
 
       [[nodiscard]] int get_column() const;
@@ -23,10 +23,10 @@ public:
 
       [[nodiscard]] SDL_FRect* get_rectangle();
 
-      [[nodiscard]] float get_r() const;
-      [[nodiscard]] float get_g() const;
-      [[nodiscard]] float get_b() const;
-      [[nodiscard]] float get_a() const;
+      [[nodiscard]] Uint8 get_r() const;
+      [[nodiscard]] Uint8 get_g() const;
+      [[nodiscard]] Uint8 get_b() const;
+      [[nodiscard]] Uint8 get_a() const;
 
       void set_column(int x);
       void set_row(int y);
