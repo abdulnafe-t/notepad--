@@ -18,6 +18,7 @@ navigation and editing actions, and nothing else. Currently, it only supports AS
   - [X] implement shift+arrow selection to activate the mark
   - [X] implement text overwriting if the mark is active
   - [ ] implement C-x, C-c, C-v
+- [ ] implement frame rate limit
 - [ ] implement undo/redo
 - [ ] implement scroll-bars
 - [ ] implement opening/saving file
