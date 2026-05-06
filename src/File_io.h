@@ -52,6 +52,8 @@ public:
       std::optional<std::size_t> get_mark() const;
 
       void set_mark(std::optional<std::size_t> new_mark);
+
+      bool is_at_last_line() const;
 };
 
 #endif

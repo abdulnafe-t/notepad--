@@ -79,7 +79,6 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
       }
 
       case SDLK_RIGHT: {
-
             if (SDL_GetModState() &
                 (SDL_KMOD_LSHIFT |
                  SDL_KMOD_RSHIFT)) { // The user is trying to highlight text.
@@ -149,6 +148,10 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
 
       case SDLK_DOWN: {
 
+            if (file.is_at_last_line()) {
+                  break;
+            }
+
             if (SDL_GetModState() &
                 (SDL_KMOD_LSHIFT |
                  SDL_KMOD_RSHIFT)) { // The user is trying to highlight text.
@@ -158,7 +161,6 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
                         GUI::mark = GUI::cursor;
                   }
             }
-
             else {
                   file.set_mark(std::nullopt);
             }

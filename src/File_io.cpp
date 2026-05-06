@@ -100,6 +100,7 @@ std::size_t File_io::get_filesize() const {
 }
 
 std::size_t File_io::get_cursor_position() const {
+      /* Return the index of the character currently highlighted by the cursor.*/
       if (gap_buffer.first_empty_char == 0) {
             return 0;
       }
@@ -107,6 +108,7 @@ std::size_t File_io::get_cursor_position() const {
       if (gap_buffer.last_empty_char + 1 == gap_buffer.get_buffer_size()) {
             return gap_buffer.first_empty_char - 1;
       }
+
       return (gap_buffer.last_empty_char + 1);
 }
 
@@ -114,8 +116,8 @@ char File_io::get_current_char() const {
       return gap_buffer.buffer[get_cursor_position()];
 }
 
-int File_io::get_line_size(std::size_t cursor_position) const {
-      return gap_buffer.get_line_size(cursor_position);
+int File_io::get_line_size(std::size_t position) const {
+      return gap_buffer.get_line_size_containing(position);
 }
 
 std::optional<std::size_t> File_io::get_mark() const {
@@ -125,3 +127,7 @@ std::optional<std::size_t> File_io::get_mark() const {
 void File_io::set_mark(std::optional<size_t> new_mark) {
       this->gap_buffer.set_mark(new_mark);
 };
+
+bool File_io::is_at_last_line() const {
+      return gap_buffer.is_at_last_line();
+}

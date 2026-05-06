@@ -4,7 +4,9 @@
 #include <algorithm>
 #include <cassert>
 #include <iostream>
+#include <iterator>
 #include <optional>
+#include <ranges>
 #include <utility>
 #include <vector>
 
@@ -41,8 +43,10 @@ public:
 
       void set_mark(std::optional<std::size_t> new_mark);
 
+      [[nodiscard]] bool is_at_last_line() const;
+
       [[nodiscard]] std::size_t get_buffer_size() const;
-      [[nodiscard]] int         get_line_size(std::size_t cursor_position) const;
+      [[nodiscard]] int         get_line_size_containing(std::size_t position) const;
 
       friend std::ostream& operator<<(std::ostream&        out,
                                       const Gap_buffer<T>& gap_buffer) {
@@ -191,21 +195,33 @@ void Gap_buffer<T>::grow_gap(int amount) {
 }
 
 template<typename T>
-int Gap_buffer<T>::get_line_size(std::size_t cursor_position) const {
-      /** Get the number of characters in the line containing cursor_position.
-       * Specifically, count the characters backwards from cursor_position until either
-       * '\n' or the beginning of the buffer, whichever comes first, then count the number
-       * of characters forwards from cursor_position until either '\n' or the end of the
-       * buffer, whichever comes first.
-       * \param cursor_position: a std:size_t representing the position in the buffer
-       * around which to measure the line_size. */
+bool Gap_buffer<T>::is_at_last_line() const {
+      auto last_new_line {std::ranges::find_last_if(
+      buffer, [](const T& element) { return element == '\n'; })};
 
-      int at_cursor {buffer[cursor_position] == '\n' ? 0 : 1};
+      bool is_single_line {last_new_line.begin() == last_new_line.end()};
+      auto last_new_line_index {std::distance(buffer.begin() + 1, last_new_line.begin())};
+
+      return (is_single_line ||
+              static_cast<std::size_t>(last_new_line_index) < first_empty_char);
+}
+
+template<typename T>
+int Gap_buffer<T>::get_line_size_containing(std::size_t position) const {
+      /** Get the number of characters in the line containing position.
+       * Specifically, count the characters backwards from position until
+       * either '\n' or the beginning of the buffer, whichever comes first, then count the
+       * number of characters forwards from position until either '\n' or the
+       * end of the buffer, whichever comes first.
+       * \param position: a std:size_t representing the position in the
+       * buffer around which to measure the line_size. */
+
+      int at_cursor {buffer[position] == '\n' ? 0 : 1};
 
       int chars_before {}, chars_after {};
 
-      if (cursor_position > 0) {
-            for (int index {static_cast<int>(cursor_position) - 1}; index >= 0; --index) {
+      if (position > 0) {
+            for (int index {static_cast<int>(position) - 1}; index >= 0; --index) {
                   T elt {buffer[static_cast<std::size_t>(index)]};
                   if (elt == '\0') {
                         continue;
@@ -224,8 +240,7 @@ int Gap_buffer<T>::get_line_size(std::size_t cursor_position) const {
       }
 
       if (at_cursor == 1) {
-            for (std::size_t index {cursor_position + 1}; index < get_buffer_size();
-                 ++index) {
+            for (std::size_t index {position + 1}; index < get_buffer_size(); ++index) {
                   T elt {buffer[index]};
                   if (elt == '\0') {
                         continue;
@@ -238,10 +253,7 @@ int Gap_buffer<T>::get_line_size(std::size_t cursor_position) const {
             }
       }
 
-      int count_before {chars_before > 0 ? chars_before : 0};
-      int count_after {chars_after > 0 ? chars_after : 0};
-
-      return count_after + count_before + at_cursor;
+      return chars_after + chars_before + at_cursor;
 }
 
 #endif
