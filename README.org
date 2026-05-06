@@ -10,9 +10,9 @@ navigation and editing actions, and nothing else. Currently, it only supports AS
 - [X] up/down cursor motions
 - [X] add build system
 - [X] refactor main()
-- [-] stop cursor motion at EOF
+- [X] stop cursor motion at EOF
   - [X] stop down movement at last line
-  - [ ] stop right movement at the end of the last line
+  - [X] stop right movement at the end of the last line
 - [-] implement cut, copy, & paste
   - [X] implement mark
   - [X] implement shift+arrow selection to activate the mark
