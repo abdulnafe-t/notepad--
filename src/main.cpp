@@ -45,6 +45,9 @@ bool init() {
       GUI::cursor.set_width(static_cast<float>(GUI::advance));
       GUI::cursor.set_height(static_cast<float>(TTF_GetFontHeight(GUI::font)));
 
+      GUI::mark.set_width(static_cast<float>(GUI::advance));
+      GUI::mark.set_height(static_cast<float>(TTF_GetFontHeight(GUI::font)));
+
       return true;
 }
 
@@ -136,10 +139,16 @@ int main() {
                               break;
                         }
 
+                        if (std::optional<std::size_t> mark {file.get_mark()}; mark) {
+                              // The mark is active
+                              if (file.get_mark().value() < file.get_cursor_position()) {
+                                    GUI::cursor = GUI::mark;
+                              }
+                        }
+
+                        GUI::cursor.set_column((GUI::cursor.get_column() + 1));
                         const char first_char {static_cast<char>(event.text.text[0])};
                         file.insert_letter(first_char);
-                        GUI::cursor.set_column((GUI::cursor.get_column() + 1));
-
                         break;
                   }
 
@@ -172,6 +181,10 @@ int main() {
                                          GUI::cursor.get_g(), GUI::cursor.get_b(),
                                          GUI::cursor.get_a());
                   SDL_RenderFillRect(GUI::renderer, GUI::cursor.get_rectangle());
+
+                  if (file.get_mark()) {
+                        SDL_RenderFillRect(GUI::renderer, GUI::mark.get_rectangle());
+                  }
 
                   SDL_GetTextureSize(GUI::texture, &text_w, &text_h);
                   text_area = {.x = 0, .y = 0, .w = text_w, .h = text_h};

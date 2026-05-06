@@ -51,8 +51,9 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
                 (SDL_KMOD_LSHIFT |
                  SDL_KMOD_RSHIFT)) { // The user is trying to highlight text.
 
-                  if (file.get_mark() < 0) {
+                  if (!file.get_mark()) {
                         file.set_mark(file.get_cursor_position());
+                        GUI::mark = GUI::cursor;
                   }
             }
 
@@ -85,6 +86,7 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
 
                   if (!file.get_mark()) {
                         file.set_mark(file.get_cursor_position());
+                        GUI::mark = GUI::cursor;
                   }
             }
 
@@ -115,6 +117,7 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
 
                   if (!file.get_mark()) {
                         file.set_mark(file.get_cursor_position());
+                        GUI::mark = GUI::cursor;
                   }
             }
 
@@ -152,6 +155,7 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
 
                   if (!file.get_mark()) {
                         file.set_mark(file.get_cursor_position());
+                        GUI::mark = GUI::cursor;
                   }
             }
 

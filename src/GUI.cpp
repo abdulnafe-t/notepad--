@@ -25,5 +25,5 @@ namespace GUI {
       int window_height {600};
       int window_width {800};
 
-      Cursor mark {};
+      Cursor mark {cursor};
 }

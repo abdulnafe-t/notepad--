@@ -89,9 +89,18 @@ std::size_t Gap_buffer<T>::get_buffer_size() const {
 
 template<typename T>
 void Gap_buffer<T>::insert_new_element(T element) {
-      if (this->first_empty_char >= this->last_empty_char) {
+      if (this->first_empty_char >= this->last_empty_char) { // Gap is full
             this->create_new_gap(this->first_empty_char);
       }
+
+      if (std::optional<std::size_t> current_mark {this->get_mark()}; current_mark) {
+            // if current_mark is not std::nullopt, i.e. if the mark is active
+            int current_mark_int {static_cast<int>(current_mark.value())};
+            int current_gap_end_int {static_cast<int>(this->get_gap_end())};
+            this->grow_gap(current_mark_int - current_gap_end_int - 1);
+            this->set_mark(std::nullopt);
+      }
+
       this->buffer[this->first_empty_char++] = element;
 }
 
@@ -152,9 +161,13 @@ void Gap_buffer<T>::grow_gap(int amount) {
       }
 
       if (amount < 0) {
-            if (std::abs(amount) <= this->first_empty_char) {
+            std::size_t old_first_empty_char {this->first_empty_char};
+            if (std::abs(amount) <= old_first_empty_char) {
                   this->first_empty_char -= static_cast<std::size_t>(std::abs(amount));
-                  this->buffer[first_empty_char] = '\0';
+                  for (std::size_t index {this->first_empty_char};
+                       index <= old_first_empty_char; ++index) {
+                        this->buffer[index] = '\0';
+                  }
             }
             else {
                   this->first_empty_char = 0;
@@ -162,10 +175,13 @@ void Gap_buffer<T>::grow_gap(int amount) {
       }
 
       if (amount > 0) {
+            std::size_t old_last_empty_char {this->last_empty_char};
             if (static_cast<std::size_t>(amount) <
-                this->get_buffer_size() - this->last_empty_char) {
+                this->get_buffer_size() - old_last_empty_char) {
                   this->last_empty_char += static_cast<std::size_t>(amount);
-                  this->buffer[last_empty_char] = '\0';
+                  for (std::size_t index {old_last_empty_char};
+                       index <= this->last_empty_char; ++index)
+                        this->buffer[index] = '\0';
             }
             else {
                   this->create_new_gap(this->last_empty_char);
