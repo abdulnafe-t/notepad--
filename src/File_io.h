@@ -54,6 +54,8 @@ public:
       void set_mark(std::optional<std::size_t> new_mark);
 
       bool is_at_last_line() const;
+      bool is_at_last_char() const;
+
 };
 
 #endif

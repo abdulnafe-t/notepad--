@@ -44,6 +44,7 @@ public:
       void set_mark(std::optional<std::size_t> new_mark);
 
       [[nodiscard]] bool is_at_last_line() const;
+      [[nodiscard]] bool is_at_last_char() const;
 
       [[nodiscard]] std::size_t get_buffer_size() const;
       [[nodiscard]] int         get_line_size_containing(std::size_t position) const;
@@ -204,6 +205,15 @@ bool Gap_buffer<T>::is_at_last_line() const {
 
       return (is_single_line ||
               static_cast<std::size_t>(last_new_line_index) < first_empty_char);
+}
+
+template<typename T>
+bool Gap_buffer<T>::is_at_last_char() const {
+      auto last_non_null {std::ranges::find_last_if(
+      buffer, [](const T& element) { return element != '\0'; })};
+      auto last_non_null_index {std::distance(buffer.begin() + 1, last_non_null.begin())};
+
+      return (static_cast<std::size_t>(last_non_null_index) < first_empty_char);
 }
 
 template<typename T>

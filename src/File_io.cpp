@@ -131,3 +131,7 @@ void File_io::set_mark(std::optional<size_t> new_mark) {
 bool File_io::is_at_last_line() const {
       return gap_buffer.is_at_last_line();
 }
+
+bool File_io::is_at_last_char() const {
+      return gap_buffer.is_at_last_char();
+}
