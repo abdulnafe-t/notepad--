@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <cassert>
 #include <iostream>
-#include <stdexcept>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -17,8 +17,9 @@ private:
       std::size_t    first_empty_char {0};  // Inclusive
       std::size_t    last_empty_char {299}; // Inclusive
 
-      int mark {-1}; // Where the beginning of the active region (aka the mark) is. -1
-                     // means there is no active region.
+      std::optional<std::size_t> mark;
+      // Where the beginning of the active region (aka the mark) is. ‘std::nullopt’
+      // means there is no active region.
 
 public:
       Gap_buffer(std::size_t buffer_size, char initial = '\0');
@@ -36,9 +37,9 @@ public:
 
       void grow_gap(int amount);
 
-      [[nodiscard]] int get_mark() const;
+      [[nodiscard]] std::optional<std::size_t> get_mark() const;
 
-      void set_mark(int new_mark);
+      void set_mark(std::optional<std::size_t> new_mark);
 
       [[nodiscard]] std::size_t get_buffer_size() const;
       [[nodiscard]] int         get_line_size(std::size_t cursor_position) const;
@@ -63,7 +64,8 @@ public:
 
 template<typename T>
 Gap_buffer<T>::Gap_buffer(std::size_t buffer_size, char initial)
-  : buffer {std::vector<T>(buffer_size, initial)} {}
+  : buffer {std::vector<T>(buffer_size, initial)}
+  , mark {std::nullopt} {}
 
 template<typename T>
 std::size_t Gap_buffer<T>::get_current_gap_size() const {
@@ -133,12 +135,12 @@ void Gap_buffer<T>::move_gap(std::size_t position) {
       }
 }
 template<typename T>
-int Gap_buffer<T>::get_mark() const {
+std::optional<std::size_t> Gap_buffer<T>::get_mark() const {
       return this->mark;
 }
 
 template<typename T>
-void Gap_buffer<T>::set_mark(int new_mark) {
+void Gap_buffer<T>::set_mark(std::optional<std::size_t> new_mark) {
       this->mark = new_mark;
 }
 

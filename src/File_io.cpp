@@ -4,7 +4,6 @@
 
 #include <cstdio>
 #include <fstream>
-#include <stdexcept>
 
 File_io::File_io(const std::string& file_name, std::size_t buffer_size)
   : gap_buffer {Gap_buffer<char>(buffer_size)}
@@ -119,10 +118,10 @@ int File_io::get_line_size(std::size_t cursor_position) const {
       return gap_buffer.get_line_size(cursor_position);
 }
 
-int File_io::get_mark() const {
+std::optional<std::size_t> File_io::get_mark() const {
       return this->gap_buffer.get_mark();
 }
 
-void File_io::set_mark(int new_mark) {
+void File_io::set_mark(std::optional<size_t> new_mark) {
       this->gap_buffer.set_mark(new_mark);
 };

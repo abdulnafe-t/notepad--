@@ -24,8 +24,8 @@ public:
 
       void                 read_file_content(std::size_t start_pos, std::size_t end_pos);
       void                 write_to_file();
-      friend std::ostream& operator<<(std::ostream& out, const File_io& file_io) {
-            return out << file_io.gap_buffer;
+      friend std::ostream& operator<<(std::ostream& out, const File_io& file) {
+            return out << file.gap_buffer;
       }
 
       void insert_letter(char letter);
@@ -49,9 +49,9 @@ public:
 
       int get_line_size(std::size_t cursor_position) const;
 
-      int get_mark() const;
+      std::optional<std::size_t> get_mark() const;
 
-      void set_mark(int new_mark);
+      void set_mark(std::optional<std::size_t> new_mark);
 };
 
 #endif

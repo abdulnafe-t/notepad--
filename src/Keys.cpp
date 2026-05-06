@@ -3,6 +3,7 @@
 #include "GUI.h"
 
 #include <SDL3/SDL_keyboard.h>
+#include <optional>
 
 bool Keys::handle_key(SDL_Keycode key, File_io& file) {
 
@@ -13,7 +14,7 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
                   break;
             }
 
-            int mark {file.get_mark()};
+            [[maybe_unused]] std::optional<std::size_t> mark {file.get_mark()};
 
             if (GUI::cursor.get_column() <= 0 && GUI::cursor.get_row() > 0) {
 
@@ -23,8 +24,7 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
 
                   std::size_t cursor_position_in_buffer {file.get_cursor_position()};
 
-                  GUI::cursor.set_column(
-                  static_cast<int>(file.get_line_size(cursor_position_in_buffer)));
+                  GUI::cursor.set_column(file.get_line_size(cursor_position_in_buffer));
 
                   file.move(1);
                   file.backwards_delete_letter();
@@ -52,12 +52,12 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
                  SDL_KMOD_RSHIFT)) { // The user is trying to highlight text.
 
                   if (file.get_mark() < 0) {
-                        file.set_mark(static_cast<int>(file.get_cursor_position()));
+                        file.set_mark(file.get_cursor_position());
                   }
             }
 
             else {
-                  file.set_mark(-1);
+                  file.set_mark(std::nullopt);
             }
 
             file.move(-1);
@@ -68,8 +68,7 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
 
                   std::size_t cursor_position_in_buffer {file.get_cursor_position()};
 
-                  GUI::cursor.set_column(
-                  static_cast<int>(file.get_line_size(cursor_position_in_buffer)));
+                  GUI::cursor.set_column(file.get_line_size(cursor_position_in_buffer));
                   break;
             }
 
@@ -84,13 +83,13 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
                 (SDL_KMOD_LSHIFT |
                  SDL_KMOD_RSHIFT)) { // The user is trying to highlight text.
 
-                  if (file.get_mark() < 0) {
-                        file.set_mark(static_cast<int>(file.get_cursor_position()));
+                  if (!file.get_mark()) {
+                        file.set_mark(file.get_cursor_position());
                   }
             }
 
             else {
-                  file.set_mark(-1);
+                  file.set_mark(std::nullopt);
             }
 
             if (file.get_current_char() == '\n') {
@@ -114,13 +113,13 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
                 (SDL_KMOD_LSHIFT |
                  SDL_KMOD_RSHIFT)) { // The user is trying to highlight text.
 
-                  if (file.get_mark() < 0) {
-                        file.set_mark(static_cast<int>(file.get_cursor_position()));
+                  if (!file.get_mark()) {
+                        file.set_mark(file.get_cursor_position());
                   }
             }
 
             else {
-                  file.set_mark(-1);
+                  file.set_mark(std::nullopt);
             }
 
             file.move(-GUI::cursor.get_column() - 1); /* Move back to the end of the
@@ -133,9 +132,8 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
                                                extends farther than the
                                                horizontal position of
                                                the (visible) cursor */
-                  file.move(
-                  -static_cast<int>(file.get_line_size(cursor_position_in_buffer)) +
-                  GUI::cursor.get_column());
+                  file.move(-file.get_line_size(cursor_position_in_buffer) +
+                            GUI::cursor.get_column());
             }
 
             else {
@@ -152,13 +150,13 @@ bool Keys::handle_key(SDL_Keycode key, File_io& file) {
                 (SDL_KMOD_LSHIFT |
                  SDL_KMOD_RSHIFT)) { // The user is trying to highlight text.
 
-                  if (file.get_mark() < 0) {
-                        file.set_mark(static_cast<int>(file.get_cursor_position()));
+                  if (!file.get_mark()) {
+                        file.set_mark(file.get_cursor_position());
                   }
             }
 
             else {
-                  file.set_mark(-1);
+                  file.set_mark(std::nullopt);
             }
 
             std::size_t cursor_position_in_buffer {file.get_cursor_position()};
