@@ -13,11 +13,15 @@ navigation and editing actions, and nothing else. Currently, it only supports AS
 - [X] stop cursor motion at EOF
   - [X] stop down movement at last line
   - [X] stop right movement at the end of the last line
-- [-] implement cut, copy, & paste
+- [X] implement cut, copy, & paste
   - [X] implement mark
   - [X] implement shift+arrow selection to activate the mark
   - [X] implement text overwriting if the mark is active
-  - [ ] implement C-x, C-c, C-v
+  - [X] implement C-x, C-c, C-v
+    - [X] keep track of the mark as the gap moves
+    - [X] implement C-c
+    - [X] implement C-v
+    - [X] implement C-x
 - [ ] implement frame rate limit
 - [ ] implement undo/redo
 - [ ] implement scroll-bars

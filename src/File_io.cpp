@@ -156,3 +156,11 @@ bool File_io::is_at_last_line() const {
 bool File_io::is_at_last_char() const {
       return gap_buffer.is_at_last_char();
 }
+
+void File_io::delete_text_backwards(std::size_t begin) {
+      gap_buffer.grow_gap(-static_cast<int>(gap_buffer.get_gap_begin() - begin));
+}
+
+void File_io::delete_text_forwards(std::size_t end) {
+      gap_buffer.grow_gap(static_cast<int>(end - gap_buffer.get_gap_end()));
+}

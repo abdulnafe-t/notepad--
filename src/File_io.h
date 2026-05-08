@@ -57,6 +57,9 @@ public:
 
       bool is_at_last_line() const;
       bool is_at_last_char() const;
+
+      void delete_text_backwards(std::size_t begin);
+      void delete_text_forwards(std::size_t end);
 };
 
 #endif
