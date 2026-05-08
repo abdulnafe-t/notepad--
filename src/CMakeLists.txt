@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED On)
 set(CMAKE_CXX_EXTENSIONS Off)
 
-add_compile_options(-pedantic-errors -Werror -Wshadow -Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion -O0 -Wno-braced-scalar-init)
+add_compile_options(-pedantic-errors -Werror -Wshadow -Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion -O0 -g -Wno-braced-scalar-init)
 
 add_executable(notepad--
   Cursor.cpp
