@@ -2,13 +2,43 @@
 
 #include "GUI.h"
 
+#include <SDL3/SDL_clipboard.h>
+#include <SDL3/SDL_events.h>
 #include <SDL3/SDL_keyboard.h>
+#include <algorithm> // For std::max, std::min
 #include <optional>
+#include <string_view>
 
-bool Keys::handle_key(SDL_Keycode key, File_io& file) {
+void Keys::insert_text(std::string_view text, File_io& file) {
+      using namespace std::string_view_literals;
+      if (text == ""sv) {
+            return;
+      }
+
+      if (std::optional<std::size_t> mark {file.get_mark()}; mark) {
+            // The mark is active
+            if (file.get_mark().value() < file.get_cursor_position()) {
+                  GUI::cursor = GUI::mark;
+            }
+      }
+
+      for (const auto& letter : text) {
+
+            file.insert_letter(letter);
+            if (letter == '\n') {
+                  GUI::cursor.set_column(0);
+                  GUI::cursor.set_row(GUI::cursor.get_row() + 1);
+            }
+            else {
+                  GUI::cursor.set_column(GUI::cursor.get_column() + 1);
+            }
+      }
+}
+
+bool Keys::handle_key(SDL_Event e, File_io& file) {
 
       bool running {true};
-      switch (key) {
+      switch (e.key.key) {
       case SDLK_BACKSPACE: {
             if (GUI::cursor.get_column() <= 0 && GUI::cursor.get_row() <= 0) {
                   break;

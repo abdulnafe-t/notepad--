@@ -135,26 +135,13 @@ int main() {
                         break;
                   }
 
-                  case SDL_EVENT_TEXT_INPUT: {
-                        if (event.text.text == nullptr) {
-                              break;
-                        }
-
-                        if (std::optional<std::size_t> mark {file.get_mark()}; mark) {
-                              // The mark is active
-                              if (file.get_mark().value() < file.get_cursor_position()) {
-                                    GUI::cursor = GUI::mark;
-                              }
-                        }
-
-                        GUI::cursor.set_column((GUI::cursor.get_column() + 1));
-                        const char first_char {static_cast<char>(event.text.text[0])};
-                        file.insert_letter(first_char);
+                  case SDL_EVENT_KEY_DOWN: {
+                        running = Keys::handle_key(event, file);
                         break;
                   }
 
-                  case SDL_EVENT_KEY_DOWN: {
-                        running = Keys::handle_key(event.key.key, file);
+                  case SDL_EVENT_TEXT_INPUT: {
+                        Keys::insert_text(event.text.text, file);
                         break;
                   }
                   }
