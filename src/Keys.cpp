@@ -14,22 +14,19 @@ void Keys::insert_text(std::string_view text, File_io& file) {
       if (text == ""sv) {
             return;
       }
-
       if (std::optional<std::size_t> mark {file.get_mark()}; mark) {
             // The mark is active
             if (file.get_mark().value() < file.get_cursor_position()) {
                   GUI::cursor = GUI::mark;
             }
       }
-
       for (const auto& letter : text) {
 
             file.insert_letter(letter);
             if (letter == '\n') {
                   GUI::cursor.set_column(0);
                   GUI::cursor.set_row(GUI::cursor.get_row() + 1);
-            }
-            else {
+            } else {
                   GUI::cursor.set_column(GUI::cursor.get_column() + 1);
             }
       }
@@ -44,16 +41,12 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
                   break;
             }
 
-            [[maybe_unused]] std::optional<std::size_t> mark {file.get_mark()};
-
             if (GUI::cursor.get_column() <= 0 && GUI::cursor.get_row() > 0) {
 
                   file.move(-1);
-
                   GUI::cursor.set_row((GUI::cursor.get_row() - 1));
 
                   std::size_t cursor_position_in_buffer {file.get_cursor_position()};
-
                   GUI::cursor.set_column(file.get_line_size(cursor_position_in_buffer));
 
                   file.move(1);
@@ -67,6 +60,7 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
 
             break;
       }
+
       case SDLK_ESCAPE: {
             running = false;
             break;
@@ -85,26 +79,19 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
                         file.set_mark(file.get_cursor_position());
                         GUI::mark = GUI::cursor;
                   }
-            }
-
-            else {
+            } else {
                   file.set_mark(std::nullopt);
             }
 
             file.move(-1);
 
             if (GUI::cursor.get_column() <= 0 && GUI::cursor.get_row() > 0) {
-
                   GUI::cursor.set_row((GUI::cursor.get_row() - 1));
-
                   std::size_t cursor_position_in_buffer {file.get_cursor_position()};
-
                   GUI::cursor.set_column(file.get_line_size(cursor_position_in_buffer));
                   break;
             }
-
             GUI::cursor.set_column((GUI::cursor.get_column() - 1));
-
             break;
       }
 
@@ -112,7 +99,6 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             if (file.is_at_last_char()) {
                   break;
             }
-
             if (SDL_GetModState() &
                 (SDL_KMOD_LSHIFT |
                  SDL_KMOD_RSHIFT)) { // The user is trying to highlight text.
@@ -121,9 +107,7 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
                         file.set_mark(file.get_cursor_position());
                         GUI::mark = GUI::cursor;
                   }
-            }
-
-            else {
+            } else {
                   file.set_mark(std::nullopt);
             }
 
@@ -152,9 +136,7 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
                         file.set_mark(file.get_cursor_position());
                         GUI::mark = GUI::cursor;
                   }
-            }
-
-            else {
+            } else {
                   file.set_mark(std::nullopt);
             }
 
@@ -162,7 +144,6 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
                                                          previous line */
 
             std::size_t cursor_position_in_buffer {file.get_cursor_position()};
-
             if (file.get_line_size(cursor_position_in_buffer) >
                 GUI::cursor.get_column()) { /* The previous line
                                                extends farther than the
@@ -170,9 +151,7 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
                                                the (visible) cursor */
                   file.move(-file.get_line_size(cursor_position_in_buffer) +
                             GUI::cursor.get_column());
-            }
-
-            else {
+            } else {
                   GUI::cursor.set_column(file.get_line_size(cursor_position_in_buffer));
             }
 
@@ -194,32 +173,26 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
                         file.set_mark(file.get_cursor_position());
                         GUI::mark = GUI::cursor;
                   }
-            }
-            else {
+            } else {
                   file.set_mark(std::nullopt);
             }
 
             std::size_t cursor_position_in_buffer {file.get_cursor_position()};
-
-            int line_size {file.get_line_size(cursor_position_in_buffer)};
+            int         line_size {file.get_line_size(cursor_position_in_buffer)};
 
             file.move(line_size - GUI::cursor.get_column() +
                       1); /* Move to beginning of next line */
 
             std::size_t new_cursor_position_in_buffer {file.get_cursor_position()};
-
-            int new_line_size {file.get_line_size(new_cursor_position_in_buffer)};
+            int         new_line_size {file.get_line_size(new_cursor_position_in_buffer)};
 
             if (new_line_size < GUI::cursor.get_column()) { /* The next line doesn't
                                                                extend as far as the
                                                                current position of the
                                                                (visible) cursor*/
                   file.move(new_line_size);
-
                   GUI::cursor.set_column(new_line_size);
-            }
-
-            else {
+            } else {
                   file.move(GUI::cursor.get_column());
             }
 
@@ -263,8 +236,7 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
                   if (mark.value() < file.get_cursor_position()) {
                         file.delete_text_backwards(highlighted_text_beg_index);
                         GUI::cursor = GUI::mark;
-                  }
-                  else {
+                  } else {
                         file.delete_text_forwards(highlighted_text_end_index);
                   }
             }
@@ -274,12 +246,10 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
       case SDLK_V: {
             // Handle paste (Ctrl+V)
             if (SDL_GetModState() & SDL_KMOD_CTRL) {
-
                   std::string clip_board_text {SDL_GetClipboardText()};
                   if (!clip_board_text.empty()) {
                         Keys::insert_text(clip_board_text, file);
-                  }
-                  else {
+                  } else {
                         std::cout << "Failed to paste text! SDL error: " << SDL_GetError()
                                   << '\n';
                   }
@@ -290,7 +260,6 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
       case SDLK_RETURN: {
             file.insert_letter('\n');
             GUI::cursor.set_row(GUI::cursor.get_row() + 1);
-
             GUI::cursor.set_column(0);
             break;
       }

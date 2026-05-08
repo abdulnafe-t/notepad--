@@ -6,7 +6,6 @@
 #include <iostream>
 #include <iterator>
 #include <optional>
-#include <ranges>
 #include <utility>
 #include <vector>
 
@@ -32,17 +31,13 @@ public:
       [[nodiscard]] std::size_t get_gap_end() const;
 
       void insert_new_element(T element);
-
       void create_new_gap(std::size_t position);
-
       void move_gap(std::size_t position);
       void move_mark(std::size_t position);
-
       void grow_gap(int amount);
+      void set_mark(std::optional<std::size_t> new_mark);
 
       [[nodiscard]] std::optional<std::size_t> get_mark() const;
-
-      void set_mark(std::optional<std::size_t> new_mark);
 
       [[nodiscard]] bool is_at_last_line() const;
       [[nodiscard]] bool is_at_last_char() const;
@@ -110,19 +105,15 @@ void Gap_buffer<T>::insert_new_element(T element) {
             this->grow_gap(current_mark_int - current_gap_end_int - 1);
             this->set_mark(std::nullopt);
       }
-
       this->buffer[this->first_empty_char++] = element;
 }
 
 template<typename T>
 void Gap_buffer<T>::create_new_gap(std::size_t position) {
       std::size_t old_size {this->buffer.size()};
-
       this->buffer.resize(old_size + Gap_buffer<T>::gap_size);
-
       this->first_empty_char = old_size;
       this->last_empty_char  = this->first_empty_char + Gap_buffer<T>::gap_size - 1;
-
       this->move_gap(position);
 }
 
@@ -138,9 +129,8 @@ void Gap_buffer<T>::move_gap(std::size_t position) {
 
             if (mark && (get_gap_end() + 1 == mark.value())) {
                   move_mark(get_gap_end() + 1 - get_current_gap_size());
-            }
-            else if (mark &&
-                     (get_gap_end() + 1 - get_current_gap_size() == mark.value())) {
+            } else if (mark &&
+                       (get_gap_end() + 1 - get_current_gap_size() == mark.value())) {
                   move_mark(get_gap_end() + 1);
             }
 
@@ -155,12 +145,10 @@ void Gap_buffer<T>::move_gap(std::size_t position) {
 
             if (mark && (get_gap_begin() - 1 == mark.value())) {
                   move_mark(get_gap_begin() - 1 + get_current_gap_size());
-            }
-            else if (mark &&
-                     (get_gap_begin() - 1 + get_current_gap_size() == mark.value())) {
+            } else if (mark &&
+                       (get_gap_begin() - 1 + get_current_gap_size() == mark.value())) {
                   move_mark(get_gap_begin() - 1);
             }
-
             std::swap(
             this->buffer[this->get_gap_begin() - 1],
             this->buffer[this->get_gap_begin() - 1 + this->get_current_gap_size()]);
@@ -203,8 +191,7 @@ void Gap_buffer<T>::grow_gap(int amount) {
                        index <= old_first_empty_char; ++index) {
                         this->buffer[index] = '\0';
                   }
-            }
-            else {
+            } else {
                   this->first_empty_char = 0;
             }
       }
@@ -217,8 +204,7 @@ void Gap_buffer<T>::grow_gap(int amount) {
                   for (std::size_t index {old_last_empty_char};
                        index <= this->last_empty_char; ++index)
                         this->buffer[index] = '\0';
-            }
-            else {
+            } else {
                   this->create_new_gap(this->last_empty_char);
                   this->buffer[first_empty_char] = '\0';
             }
@@ -257,7 +243,6 @@ int Gap_buffer<T>::get_line_size_containing(std::size_t position) const {
        * buffer around which to measure the line_size. */
 
       int at_cursor {buffer[position] == '\n' ? 0 : 1};
-
       int chars_before {}, chars_after {};
 
       if (position > 0) {
@@ -270,9 +255,7 @@ int Gap_buffer<T>::get_line_size_containing(std::size_t position) const {
                   if (elt == '\n') {
                         break;
                   }
-
                   ++chars_before;
-
                   if (index == 0) {
                         break;
                   }
@@ -285,14 +268,12 @@ int Gap_buffer<T>::get_line_size_containing(std::size_t position) const {
                   if (elt == '\0') {
                         continue;
                   }
-
                   if (elt == '\n') {
                         break;
                   }
                   ++chars_after;
             }
       }
-
       return chars_after + chars_before + at_cursor;
 }
 

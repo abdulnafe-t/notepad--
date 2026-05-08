@@ -29,37 +29,32 @@ public:
             return out << file.gap_buffer;
       }
 
+      std::size_t get_buffer_size() const;
+      std::size_t get_filesize() const;
+      std::size_t get_cursor_position() const;
+
       void insert_letter(char letter);
       void insert_text(std::string_view str);
 
-      std::size_t get_buffer_size() const;
-
-      std::string get_file_name() const;
-
-      void backwards_delete_letter();
       void forwards_delete_char();
-
-      std::string get_text(std::size_t begin = 0, std::size_t end = 0) const;
+      void backwards_delete_letter();
+      void delete_text_forwards(std::size_t end);
+      void delete_text_backwards(std::size_t begin);
 
       void move(int amount);
+      void set_mark(std::optional<std::size_t> new_mark);
 
-      std::size_t get_filesize() const;
+      std::string get_file_name() const;
+      std::string get_text(std::size_t begin = 0, std::size_t end = 0) const;
 
       char get_current_char() const;
-
-      std::size_t get_cursor_position() const;
 
       int get_line_size(std::size_t cursor_position) const;
 
       std::optional<std::size_t> get_mark() const;
 
-      void set_mark(std::optional<std::size_t> new_mark);
-
       bool is_at_last_line() const;
       bool is_at_last_char() const;
-
-      void delete_text_backwards(std::size_t begin);
-      void delete_text_forwards(std::size_t end);
 };
 
 #endif

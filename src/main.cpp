@@ -154,9 +154,7 @@ int main() {
                   if (GUI::surface != nullptr) {
                         GUI::texture =
                         SDL_CreateTextureFromSurface(GUI::renderer, GUI::surface);
-                  }
-
-                  else {
+                  } else {
                         GUI::surface = TTF_RenderText_Blended_Wrapped(GUI::font, "", 0,
                                                                       GUI::text_color, 0);
                         GUI::texture =

@@ -78,9 +78,7 @@ std::string File_io::get_text(std::size_t begin, std::size_t end) const {
                         text_content.push_back(letter);
                   }
             }
-      }
-
-      else {
+      } else {
 
             for (std::size_t index {begin}; index < gap_buffer.first_empty_char;
                  ++index) {
@@ -106,8 +104,7 @@ void File_io::move(int amount) {
       std::size_t target {};
       if (amount >= 0) {
             target = this->gap_buffer.get_gap_begin() + static_cast<std::size_t>(amount);
-      }
-      else {
+      } else {
             target =
             this->gap_buffer.get_gap_begin() - static_cast<std::size_t>(std::abs(amount));
       }
