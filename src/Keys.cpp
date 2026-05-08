@@ -227,6 +227,40 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             break;
       }
 
+      case SDLK_C: {
+            // Handle copy (Ctrl+C)
+            if (std::optional<std::size_t> mark {file.get_mark()};
+                (SDL_GetModState() & SDL_KMOD_CTRL) && (mark)) {
+
+                  std::size_t highlighted_text_beg_index {
+                  std::min(mark.value(), file.get_cursor_position())};
+
+                  std::size_t highlighted_text_end_index {
+                  std::max(mark.value(), file.get_cursor_position())};
+
+                  std::string highlighted_text(
+                  file.get_text(highlighted_text_beg_index, highlighted_text_end_index));
+                  SDL_SetClipboardText(highlighted_text.c_str());
+            }
+            break;
+      }
+
+      case SDLK_V: {
+            // Handle paste (Ctrl+V)
+            if (SDL_GetModState() & SDL_KMOD_CTRL) {
+
+                  std::string clip_board_text {SDL_GetClipboardText()};
+                  if (!clip_board_text.empty()) {
+                        Keys::insert_text(clip_board_text, file);
+                  }
+                  else {
+                        std::cout << "Failed to paste text! SDL error: " << SDL_GetError()
+                                  << '\n';
+                  }
+            }
+            break;
+      }
+
       case SDLK_RETURN: {
             file.insert_letter('\n');
             GUI::cursor.set_row(GUI::cursor.get_row() + 1);

@@ -36,6 +36,7 @@ public:
       void create_new_gap(std::size_t position);
 
       void move_gap(std::size_t position);
+      void move_mark(std::size_t position);
 
       void grow_gap(int amount);
 
@@ -94,6 +95,10 @@ std::size_t Gap_buffer<T>::get_buffer_size() const {
 
 template<typename T>
 void Gap_buffer<T>::insert_new_element(T element) {
+      if (element == T {}) {
+            return;
+      }
+
       if (this->first_empty_char >= this->last_empty_char) { // Gap is full
             this->create_new_gap(this->first_empty_char);
       }
@@ -123,13 +128,21 @@ void Gap_buffer<T>::create_new_gap(std::size_t position) {
 
 template<typename T>
 void Gap_buffer<T>::move_gap(std::size_t position) {
-
+      /** Move the gap so its beginning is at position.*/
       if (position == this->get_gap_begin() || position >= this->get_buffer_size()) {
             return;
       }
 
       while (this->get_gap_begin() < position &&
              this->get_gap_end() < this->get_buffer_size() - 1) {
+
+            if (mark && (get_gap_end() + 1 == mark.value())) {
+                  move_mark(get_gap_end() + 1 - get_current_gap_size());
+            }
+            else if (mark &&
+                     (get_gap_end() + 1 - get_current_gap_size() == mark.value())) {
+                  move_mark(get_gap_end() + 1);
+            }
 
             std::swap(this->buffer[get_gap_end() + 1],
                       this->buffer[get_gap_end() + 1 - this->get_current_gap_size()]);
@@ -140,6 +153,14 @@ void Gap_buffer<T>::move_gap(std::size_t position) {
 
       while (this->get_gap_begin() > position) {
 
+            if (mark && (get_gap_begin() - 1 == mark.value())) {
+                  move_mark(get_gap_begin() - 1 + get_current_gap_size());
+            }
+            else if (mark &&
+                     (get_gap_begin() - 1 + get_current_gap_size() == mark.value())) {
+                  move_mark(get_gap_begin() - 1);
+            }
+
             std::swap(
             this->buffer[this->get_gap_begin() - 1],
             this->buffer[this->get_gap_begin() - 1 + this->get_current_gap_size()]);
@@ -148,6 +169,15 @@ void Gap_buffer<T>::move_gap(std::size_t position) {
             --this->first_empty_char;
       }
 }
+
+template<typename T>
+void Gap_buffer<T>::move_mark(std::size_t position) {
+      if (!get_mark() || get_mark().value() == position) {
+            return;
+      }
+      set_mark(position);
+}
+
 template<typename T>
 std::optional<std::size_t> Gap_buffer<T>::get_mark() const {
       return this->mark;
@@ -220,9 +250,9 @@ template<typename T>
 int Gap_buffer<T>::get_line_size_containing(std::size_t position) const {
       /** Get the number of characters in the line containing position.
        * Specifically, count the characters backwards from position until
-       * either '\n' or the beginning of the buffer, whichever comes first, then count the
-       * number of characters forwards from position until either '\n' or the
-       * end of the buffer, whichever comes first.
+       * either '\n' or the beginning of the buffer, whichever comes first, then
+       * count the number of characters forwards from position until either '\n' or
+       * the end of the buffer, whichever comes first.
        * \param position: a std:size_t representing the position in the
        * buffer around which to measure the line_size. */
 
