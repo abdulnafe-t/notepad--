@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <fstream>
 #include <string>
+#include <string_view>
 
 class File_io {
 private:
@@ -29,6 +30,7 @@ public:
       }
 
       void insert_letter(char letter);
+      void insert_text(std::string_view str);
 
       std::size_t get_buffer_size() const;
 
@@ -37,7 +39,7 @@ public:
       void backwards_delete_letter();
       void forwards_delete_char();
 
-      std::string get_text() const;
+      std::string get_text(std::size_t begin = 0, std::size_t end = 0) const;
 
       void move(int amount);
 
@@ -55,7 +57,6 @@ public:
 
       bool is_at_last_line() const;
       bool is_at_last_char() const;
-
 };
 
 #endif

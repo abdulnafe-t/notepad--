@@ -44,6 +44,12 @@ void File_io::insert_letter(char letter) {
       this->gap_buffer.insert_new_element(letter);
 }
 
+void File_io::insert_text(std::string_view str) {
+      for (const char& letter : str) {
+            this->gap_buffer.insert_new_element(letter);
+      }
+}
+
 std::size_t File_io::get_buffer_size() const {
       return this->gap_buffer.buffer.size();
 }
@@ -60,21 +66,36 @@ void File_io::forwards_delete_char() {
       this->gap_buffer.grow_gap(1);
 }
 
-std::string File_io::get_text() const {
+std::string File_io::get_text(std::size_t begin, std::size_t end) const {
       std::string text_content;
 
-      for (std::size_t index {0}; index < this->gap_buffer.get_gap_begin(); ++index) {
-            char letter {gap_buffer.buffer[index]};
-            if (letter != '\0') {
-                  text_content.push_back(gap_buffer.buffer[index]);
+      end = end == 0 ? this->gap_buffer.get_buffer_size() : end;
+
+      if (begin > gap_buffer.last_empty_char) { // The gap is outside the requested range
+            for (std::size_t index {begin}; index < end; ++index) {
+                  char letter {gap_buffer.buffer[index]};
+                  if (letter != '\0') {
+                        text_content.push_back(letter);
+                  }
             }
       }
 
-      for (std::size_t index {gap_buffer.get_gap_end()};
-           index < this->gap_buffer.get_buffer_size(); ++index) {
-            char letter {gap_buffer.buffer[index]};
-            if (letter != '\0') {
-                  text_content.push_back(gap_buffer.buffer[index]);
+      else {
+
+            for (std::size_t index {begin}; index < gap_buffer.first_empty_char;
+                 ++index) {
+                  char letter {gap_buffer.buffer[index]};
+                  if (letter != '\0') {
+                        text_content.push_back(letter);
+                  }
+            }
+
+            for (std::size_t index {gap_buffer.last_empty_char + 1}; index < end;
+                 ++index) {
+                  char letter {gap_buffer.buffer[index]};
+                  if (letter != '\0') {
+                        text_content.push_back(letter);
+                  }
             }
       }
 
