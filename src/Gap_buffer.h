@@ -242,7 +242,7 @@ int Gap_buffer<T>::get_line_size_containing(std::size_t position) const {
        * \param position: a std:size_t representing the position in the
        * buffer around which to measure the line_size. */
 
-      int at_cursor {buffer[position] == '\n' ? 0 : 1};
+      int at_cursor {(buffer[position] == '\n' || buffer[position] == '\0') ? 0 : 1};
       int chars_before {}, chars_after {};
 
       if (position > 0) {
