@@ -6,7 +6,6 @@ notepad-- is a minimalist, featureless text editor. It supports the most basic t
 navigation and editing actions, and nothing else. Currently, it only supports ASCII text.
 
 * Installation
-Prerequisites: SDL3, SDL3_ttf, and CMake.
 
 ** Make sure you have SDL3 and CMake installed
 
