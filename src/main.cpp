@@ -160,41 +160,40 @@ int main() {
                         break;
                   }
                   }
-
-                  SDL_DestroyTexture(GUI::texture);
-                  GUI::surface = TTF_RenderText_Blended_Wrapped(
-                  GUI::font, file.get_text().data(), file.get_text().size(),
-                  GUI::text_color, 0);
-
-                  if (GUI::surface != nullptr) {
-                        GUI::texture =
-                        SDL_CreateTextureFromSurface(GUI::renderer, GUI::surface);
-                  } else {
-                        GUI::surface = TTF_RenderText_Blended_Wrapped(GUI::font, "", 0,
-                                                                      GUI::text_color, 0);
-                        GUI::texture =
-                        SDL_CreateTextureFromSurface(GUI::renderer, GUI::surface);
-                  }
-                  SDL_DestroySurface(GUI::surface);
-                  SDL_RenderClear(GUI::renderer);
-
-                  SDL_SetRenderDrawColor(GUI::renderer, GUI::cursor.get_r(),
-                                         GUI::cursor.get_g(), GUI::cursor.get_b(),
-                                         GUI::cursor.get_a());
-                  SDL_RenderFillRect(GUI::renderer, GUI::cursor.get_rectangle());
-
-                  if (file.get_mark()) {
-                        SDL_RenderFillRect(GUI::renderer, GUI::mark.get_rectangle());
-                  }
-
-                  SDL_GetTextureSize(GUI::texture, &text_w, &text_h);
-                  text_area = {.x = 0, .y = 0, .w = text_w, .h = text_h};
-                  SDL_RenderTexture(GUI::renderer, GUI::texture, nullptr, &text_area);
-
-                  SDL_SetRenderDrawColor(GUI::renderer, 0x00, 0x00, 0x00, 0xFF);
-
-                  SDL_RenderPresent(GUI::renderer);
             }
+
+            SDL_DestroyTexture(GUI::texture);
+            GUI::surface =
+            TTF_RenderText_Blended_Wrapped(GUI::font, file.get_text().data(),
+                                           file.get_text().size(), GUI::text_color, 0);
+
+            if (GUI::surface != nullptr) {
+                  GUI::texture =
+                  SDL_CreateTextureFromSurface(GUI::renderer, GUI::surface);
+            } else {
+                  GUI::surface =
+                  TTF_RenderText_Blended_Wrapped(GUI::font, "", 0, GUI::text_color, 0);
+                  GUI::texture =
+                  SDL_CreateTextureFromSurface(GUI::renderer, GUI::surface);
+            }
+
+            SDL_RenderClear(GUI::renderer);
+
+            SDL_SetRenderDrawColor(GUI::renderer, GUI::cursor.get_r(),
+                                   GUI::cursor.get_g(), GUI::cursor.get_b(),
+                                   GUI::cursor.get_a());
+            SDL_RenderFillRect(GUI::renderer, GUI::cursor.get_rectangle());
+
+            if (file.get_mark()) {
+                  SDL_RenderFillRect(GUI::renderer, GUI::mark.get_rectangle());
+            }
+
+            SDL_GetTextureSize(GUI::texture, &text_w, &text_h);
+            text_area = {.x = 0, .y = 0, .w = text_w, .h = text_h};
+            SDL_RenderTexture(GUI::renderer, GUI::texture, nullptr, &text_area);
+
+            SDL_SetRenderDrawColor(GUI::renderer, 0x00, 0x00, 0x00, 0xFF);
+            SDL_RenderPresent(GUI::renderer);
       }
 
       close();
