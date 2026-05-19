@@ -207,6 +207,8 @@ int main() {
                   SDL_CreateTextureFromSurface(GUI::renderer, GUI::surface);
             }
 
+            SDL_DestroySurface(GUI::surface);
+            GUI::surface = nullptr;
             SDL_RenderClear(GUI::renderer);
 
             SDL_SetRenderDrawColor(GUI::renderer, GUI::cursor.get_r(),
