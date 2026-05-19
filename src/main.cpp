@@ -39,12 +39,10 @@ bool init() {
             return false;
       }
 
-      std::string font_path {"/home/scion/.local/share/fonts/GeistMonoNerd/"
-                             "GeistMonoNerdFontMono-Regular.otf"};
-
-      GUI::font = TTF_OpenFont(font_path.c_str(), static_cast<float>(GUI::font_size));
+      GUI::font =
+      TTF_OpenFont(GUI::font_path.c_str(), static_cast<float>(GUI::font_size));
       if (GUI::font == nullptr) {
-            SDL_Log("Could not load %s! SDL_ttf Error: %s\n", font_path.c_str(),
+            SDL_Log("Could not load %s! SDL_ttf Error: %s\n", GUI::font_path.c_str(),
                     SDL_GetError());
             return false;
       }
@@ -54,9 +52,7 @@ bool init() {
 
       ImGuiIO& io = ImGui::GetIO();
 
-      io.Fonts->AddFontFromFileTTF(
-      "/home/scion/.local/share/fonts/GeistMonoNerd/GeistMonoNerdFontMono-Regular.otf",
-      0.7f * GUI::font_size_px);
+      io.Fonts->AddFontFromFileTTF(GUI::font_path.c_str(), 0.7f * GUI::font_size_px);
 
       GUI::cursor.set_width(static_cast<float>(GUI::advance));
       GUI::cursor.set_height(static_cast<float>(TTF_GetFontHeight(GUI::font)));

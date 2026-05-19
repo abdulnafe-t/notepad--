@@ -5,6 +5,7 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <string>
 
 namespace GUI {
       extern int           font_size;
@@ -14,6 +15,7 @@ namespace GUI {
       extern SDL_Renderer* renderer;
       extern SDL_Texture*  texture;
       extern TTF_Font*     font;
+      extern std::string   font_path;
       extern int           advance;
       extern SDL_Surface*  surface;
       extern SDL_Color     text_color;

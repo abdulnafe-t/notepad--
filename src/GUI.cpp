@@ -9,6 +9,7 @@ namespace GUI {
       SDL_Renderer* renderer;
       SDL_Texture*  texture;
       TTF_Font*     font;
+      std::string   font_path {"../vendor/imgui/misc/fonts/Cousine-Regular.ttf"};
       int           advance;
       SDL_Surface*  surface;
       SDL_Color     text_color = {.r {255}, .g {255}, .b {255}, .a {SDL_ALPHA_OPAQUE}};
