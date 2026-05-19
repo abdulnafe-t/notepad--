@@ -19,6 +19,10 @@ File_io::~File_io() {
 }
 
 void File_io::read_file_content(std::size_t start_pos, std::size_t end_pos) {
+      if (end_pos == 0) { // Avoid SDL "Text has zero width" error
+            this->gap_buffer.insert_new_element('\n');
+      }
+
       this->file_io.seekg(static_cast<long>(start_pos), std::ios::beg);
       for (std::size_t next_char_position {start_pos}; next_char_position < end_pos;
            ++next_char_position) {
