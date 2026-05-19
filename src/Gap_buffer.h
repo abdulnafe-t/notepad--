@@ -243,7 +243,7 @@ template<typename T>
 bool Gap_buffer<T>::is_at_last_char() const {
       auto last_non_null {std::ranges::find_last_if(
       buffer, [](const T& element) { return element != '\0'; })};
-      auto last_non_null_index {std::distance(buffer.begin() + 1, last_non_null.begin())};
+      auto last_non_null_index {std::distance(buffer.begin(), last_non_null.begin())};
 
       return (static_cast<std::size_t>(last_non_null_index) < first_empty_char);
 }
