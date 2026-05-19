@@ -123,9 +123,6 @@ std::size_t File_io::get_filesize() const {
 
 std::size_t File_io::get_cursor_position() const {
       /* Return the index of the character currently highlighted by the cursor.*/
-      if (gap_buffer.first_empty_char == 0) {
-            return 0;
-      }
 
       if (gap_buffer.last_empty_char + 1 == gap_buffer.get_buffer_size()) {
             return gap_buffer.first_empty_char - 1;
