@@ -23,11 +23,12 @@ navigation and editing actions, and nothing else. Currently, it only supports AS
     - [X] implement C-v
     - [X] implement C-x
 - [ ] implement frame rate limit
-- [ ] implement undo/redo
++- [ ] implement undo/redo+
 - [ ] implement scroll-bars
 - [ ] implement opening/saving file
 - [ ] implement search & replace
-- [ ] use system font
++- [ ] use system font+
+- [X] use vendored font: Cousine Regular, packaged with Dear ImGui
 - [ ] implement RAII: wrap SDL pointers in a custom class
 
 * Long term:
@@ -35,3 +36,8 @@ navigation and editing actions, and nothing else. Currently, it only supports AS
 - [ ] smart buffering of larger files
 - [ ] unicode support?
 - [ ] emacs-style keybindings
+- [ ] font scale customization
+  
+  
+  
+  
