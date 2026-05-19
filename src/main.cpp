@@ -30,8 +30,6 @@ bool init() {
 
       IMGUI_CHECKVERSION();
       ImGui::CreateContext();
-      ImGuiIO& io = ImGui::GetIO();
-      io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
       ImGui_ImplSDL3_InitForSDLRenderer(GUI::window, GUI::renderer);
       ImGui_ImplSDLRenderer3_Init(GUI::renderer);
       ImGui::StyleColorsDark();
