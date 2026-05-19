@@ -234,9 +234,9 @@ bool Gap_buffer<T>::is_at_last_line() const {
             }
       }
 
-      auto last_new_line_index {std::distance(buffer.begin() + 1, last_new_line.begin())};
+      auto last_new_line_index {std::distance(buffer.begin(), last_new_line.begin())};
       // The buffer contains more than one newline, and the cursor is past the last one
-      return static_cast<std::size_t>(last_new_line_index) < first_empty_char;
+      return static_cast<std::size_t>(last_new_line_index) <= first_empty_char;
 }
 
 template<typename T>
