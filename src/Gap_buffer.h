@@ -216,11 +216,27 @@ bool Gap_buffer<T>::is_at_last_line() const {
       auto last_new_line {std::ranges::find_last_if(
       buffer, [](const T& element) { return element == '\n'; })};
 
-      bool is_single_line {last_new_line.begin() == last_new_line.end()};
-      auto last_new_line_index {std::distance(buffer.begin() + 1, last_new_line.begin())};
+      // The buffer contains no newlines
+      if (last_new_line.begin() >= last_new_line.end()) {
+            return true;
+      }
 
-      return (is_single_line ||
-              static_cast<std::size_t>(last_new_line_index) < first_empty_char);
+      auto first_new_line {
+      std::ranges::find_if(buffer, [](const T& element) { return element == '\n'; })};
+      
+      // The buffer contains exactly one newline with nothing after it
+      if (first_new_line == last_new_line.begin()) {
+            auto after_last_new_line {
+            std::ranges::find_if(last_new_line.begin() + 1, buffer.end(),
+                                 [](const T& element) { return element != '\0'; })};
+            if (after_last_new_line == buffer.end()) {
+                  return true;
+            }
+      }
+
+      auto last_new_line_index {std::distance(buffer.begin() + 1, last_new_line.begin())};
+      // The buffer contains more than one newline, and the cursor is past the last one
+      return static_cast<std::size_t>(last_new_line_index) < first_empty_char;
 }
 
 template<typename T>
