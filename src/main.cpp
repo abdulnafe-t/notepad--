@@ -54,6 +54,12 @@ bool init() {
       TTF_GetGlyphMetrics(GUI::font, 'T', nullptr, nullptr, nullptr, nullptr,
                           &GUI::advance);
 
+      ImGuiIO& io = ImGui::GetIO();
+
+      io.Fonts->AddFontFromFileTTF(
+      "/home/scion/.local/share/fonts/GeistMonoNerd/GeistMonoNerdFontMono-Regular.otf",
+      0.7f * GUI::font_size_px);
+
       GUI::cursor.set_width(static_cast<float>(GUI::advance));
       GUI::cursor.set_height(static_cast<float>(TTF_GetFontHeight(GUI::font)));
 
@@ -101,14 +107,18 @@ int main() {
 
       file.read_file_content(0, file_size);
 
-      SDL_Rect input_area {
-      .x = 0, .y = 0, .w = GUI::window_width, .h = GUI::window_height};
+      float    main_menu_size {(GUI::main_menu_padding) + GUI::font_size_px};
+      SDL_Rect input_area {.x = 0,
+                           .y = static_cast<int>(main_menu_size),
+                           .w = GUI::window_width,
+                           .h = GUI::window_height};
 
       SDL_SetTextInputArea(GUI::window, &input_area, 0);
       SDL_StartTextInput(GUI::window);
 
       if (GUI::surface = TTF_RenderText_Blended_Wrapped(
-          GUI::font, file.get_text().data(), file.get_text().size(), GUI::text_color, 0);
+          GUI::font, file.get_text().data(), file.get_text().size(), GUI::text_color,
+          0); // The 0 means only wrap on newline characters
 
           GUI::surface == nullptr) {
             SDL_Log("Could not create text surface! SDL error: %s\n", SDL_GetError());
@@ -133,7 +143,7 @@ int main() {
                              GUI::background_color.a);
       SDL_RenderClear(GUI::renderer);
 
-      SDL_FRect text_area {.x = 0, .y = 0, .w = text_w, .h = text_h};
+      SDL_FRect text_area {.x = 0, .y = main_menu_size, .w = text_w, .h = text_h};
       SDL_RenderTexture(GUI::renderer, GUI::texture, nullptr, &text_area);
       SDL_RenderPresent(GUI::renderer);
 
@@ -143,6 +153,7 @@ int main() {
             SDL_GetWindowSize(GUI::window, &GUI::window_width, &GUI::window_height);
 
             while (SDL_PollEvent(&event)) {
+                  ImGui_ImplSDL3_ProcessEvent(&event);
 
                   switch (event.type) {
                   case SDL_EVENT_QUIT: {
@@ -162,6 +173,24 @@ int main() {
                   }
             }
 
+            ImGui_ImplSDLRenderer3_NewFrame();
+            ImGui_ImplSDL3_NewFrame();
+            ImGui::NewFrame();
+
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding,
+                                ImVec2(0, GUI::main_menu_padding));
+
+            if (ImGui::BeginMainMenuBar()) {
+
+                  if (ImGui::BeginMenu("File")) {
+                        if (ImGui::MenuItem("Quit", "Esc")) {
+                              running = false;
+                        }
+                        ImGui::EndMenu();
+                  }
+                  ImGui::EndMainMenuBar();
+            }
+            ImGui::PopStyleVar();
             SDL_DestroyTexture(GUI::texture);
             GUI::surface =
             TTF_RenderText_Blended_Wrapped(GUI::font, file.get_text().data(),
@@ -170,6 +199,7 @@ int main() {
             if (GUI::surface != nullptr) {
                   GUI::texture =
                   SDL_CreateTextureFromSurface(GUI::renderer, GUI::surface);
+
             } else {
                   GUI::surface =
                   TTF_RenderText_Blended_Wrapped(GUI::font, "", 0, GUI::text_color, 0);
@@ -189,10 +219,13 @@ int main() {
             }
 
             SDL_GetTextureSize(GUI::texture, &text_w, &text_h);
-            text_area = {.x = 0, .y = 0, .w = text_w, .h = text_h};
+            text_area = {.x = 0, .y = main_menu_size, .w = text_w, .h = text_h};
             SDL_RenderTexture(GUI::renderer, GUI::texture, nullptr, &text_area);
 
             SDL_SetRenderDrawColor(GUI::renderer, 0x00, 0x00, 0x00, 0xFF);
+            ImGui::Render();
+
+            ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), GUI::renderer);
             SDL_RenderPresent(GUI::renderer);
       }
 

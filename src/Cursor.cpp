@@ -1,5 +1,7 @@
 #include "Cursor.h"
 
+#include "GUI.h"
+
 int Cursor::get_column() const {
       return column;
 }
@@ -40,8 +42,9 @@ void Cursor::set_column(int x) {
 }
 
 void Cursor::set_row(int y) {
-      rectangle.y = static_cast<float>(y) * rectangle.h;
-      row         = y;
+      rectangle.y =
+      (static_cast<float>(y) * rectangle.h) + GUI::main_menu_padding + GUI::font_size_px;
+      row = y;
 }
 
 void Cursor::set_width(float w) {
@@ -53,5 +56,8 @@ void Cursor::set_height(float h) {
 }
 
 Cursor::Cursor(int x, int y, float w, float h, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-  : rectangle {.x {static_cast<float>(x)}, .y {static_cast<float>(y)}, .w {w}, .h {h}}
+  : rectangle {.x {static_cast<float>(x)},
+               .y {static_cast<float>(y) + GUI::main_menu_padding + GUI::font_size_px},
+               .w {w},
+               .h {h}}
   , color {.r {r}, .g {g}, .b {b}, .a {a}} {}

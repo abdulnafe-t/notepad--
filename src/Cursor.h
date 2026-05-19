@@ -32,7 +32,7 @@ public:
       void set_row(int y);
 
       void set_width(float w);
-      void set_height(float heigt);
+      void set_height(float height);
 };
 
 #endif
