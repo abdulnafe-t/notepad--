@@ -2,6 +2,9 @@
 #include "GUI.h"
 #include "Gap_buffer.h"
 #include "Keys.h"
+#include "imgui.h"
+#include "imgui_impl_sdl3.h"
+#include "imgui_impl_sdlrenderer3.h"
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_events.h>
@@ -24,6 +27,14 @@ bool init() {
                     SDL_GetError());
             return false;
       }
+
+      IMGUI_CHECKVERSION();
+      ImGui::CreateContext();
+      ImGuiIO& io = ImGui::GetIO();
+      io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+      ImGui_ImplSDL3_InitForSDLRenderer(GUI::window, GUI::renderer);
+      ImGui_ImplSDLRenderer3_Init(GUI::renderer);
+      ImGui::StyleColorsDark();
 
       if (!TTF_Init()) {
             SDL_Log("init(): failed to initialize TTF. SDL error: %s\n", SDL_GetError());
@@ -53,6 +64,10 @@ bool init() {
 }
 
 void close() {
+
+      ImGui_ImplSDLRenderer3_Shutdown();
+      ImGui_ImplSDL3_Shutdown();
+      ImGui::DestroyContext();
 
       SDL_DestroyTexture(GUI::texture);
       SDL_DestroySurface(GUI::surface);
