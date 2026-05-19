@@ -5,6 +5,32 @@
 notepad-- is a minimalist, featureless text editor. It supports the most basic text
 navigation and editing actions, and nothing else. Currently, it only supports ASCII text.
 
+* Installation
+Prerequisites: SDL3, SDL3_ttf, and CMake.
+
+** Make sure you have SDL3 and CMake installed
+
+For example, on *Arch:*
+#+begin_src bash
+sudo pacman -S cmake sdl3 sdl3_ttf
+#+end_src
+
+** Get the source from this repo
+#+begin_src bash
+git clone https://github.com/abdulnafe-t/notepad--
+cd notepad--
+
+# notepad-- uses git submodules for Dear ImGui.
+git submodule init
+git submodule update
+#+end_src
+
+** Build notepad--
+#+begin_src bash
+cmake -S src -B build
+cmake --build build
+#+end_src
+
 * TODO:
 - [X] left/right cursor motions
 - [X] up/down cursor motions
