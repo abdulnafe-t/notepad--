@@ -62,7 +62,3 @@ cmake --build build
 - [ ] unicode support?
 - [ ] emacs-style keybindings
 - [ ] font scale customization
-  
-  
-  
-  
