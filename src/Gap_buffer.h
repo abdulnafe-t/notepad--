@@ -262,7 +262,7 @@ int Gap_buffer<T>::get_line_size_containing(std::size_t position) const {
             }
       }
 
-      if (at_cursor == 1) {
+      if (at_cursor == 1 || position == 0) {
             for (std::size_t index {position + 1}; index < get_buffer_size(); ++index) {
                   T elt {buffer[index]};
                   if (elt == '\0') {
