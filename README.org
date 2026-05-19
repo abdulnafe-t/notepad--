@@ -1,8 +1,8 @@
-#+title: notepad-{}-: A featureless text editor
+#+title: =notepad--=: A featureless text editor
 #+author: Abdulnafé Toulaïmat
 #+language: en_US
 
-notepad-- is a minimalist, featureless text editor. It supports the most basic text
+=notepad--= is a minimalist, featureless text editor. It supports the most basic text
 navigation and editing actions, and nothing else. Currently, it only supports ASCII text.
 
 * Installation
@@ -24,7 +24,7 @@ git submodule init
 git submodule update
 #+end_src
 
-** Build notepad--
+** Build =notepad--=
 #+begin_src bash
 cmake -S src -B build
 cmake --build build
