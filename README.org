@@ -1,4 +1,4 @@
-#+title: =notepad--=: A featureless text editor
+#+title: =notepad\-\-= : A featureless text editor
 #+author: Abdulnafé Toulaïmat
 #+language: en_US
 
