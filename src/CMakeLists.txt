@@ -10,6 +10,8 @@ set(CMAKE_CXX_EXTENSIONS Off)
 
 add_compile_options(-pedantic-errors -Werror -Wshadow -Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion -O0 -g -Wno-braced-scalar-init)
 
+add_subdirectory(../vendor/imgui ${CMAKE_BINARY_DIR}/vendor/imgui)
+
 add_executable(notepad--
   Cursor.cpp
   Cursor.h
@@ -22,4 +24,4 @@ add_executable(notepad--
   Keys.h
   main.cpp)
 
-target_link_libraries(notepad-- SDL3 SDL3_ttf)
+target_link_libraries(notepad-- imgui SDL3 SDL3_ttf)
