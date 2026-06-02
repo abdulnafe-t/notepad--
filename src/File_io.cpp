@@ -1,19 +1,26 @@
 #include "File_io.h"
 
+#include "GUI.h"
 #include "Gap_buffer.h"
 
+#include <SDL3/SDL_dialog.h>
+#include <array>
 #include <cstdio>
 #include <fstream>
+#include <string>
+#include <string_view>
 
 File_io::File_io()
   : gap_buffer {Gap_buffer<char>(1000)}
   , filename {std::tmpnam(nullptr)}
-  , file_io_stream {filename, std::ios::in | std::ios::out} {}
+  , file_io_stream {filename, std::ios::in | std::ios::out}
+  , is_temp {true} {}
 
 File_io::File_io(const std::string& file_name, std::size_t buffer_size)
   : gap_buffer {Gap_buffer<char>(buffer_size)}
   , filename {file_name}
-  , file_io_stream {file_name, std::ios::in | std::ios::out} {}
+  , file_io_stream {file_name, std::ios::in | std::ios::out}
+  , is_temp {false} {}
 
 File_io::~File_io() {
       if (file_io_stream) {
@@ -39,6 +46,42 @@ void File_io::read_file_content(std::size_t start_pos, std::size_t end_pos) {
 
       this->gap_buffer.move_gap(0);
 }
+
+void SDLCALL File_io::save_file_callback(void* userdata, const char* const* filelist,
+                                         [[maybe_unused]] int filter) {
+
+      auto* self = static_cast<File_io*>(userdata);
+
+      if (filelist == nullptr) {
+            SDL_Log("An error occured: %s", SDL_GetError());
+            return;
+      }
+
+      if (*filelist == nullptr) {
+            SDL_Log("The user did not select any file.");
+            SDL_Log("Most likely, the dialog was canceled.");
+            return;
+      }
+
+      SDL_Log("Full path to selected file: '%s'", *filelist);
+      self->filename = *filelist;
+      self->file_io_stream.close();
+      self->file_io_stream.open(self->filename, std::ios::in | std::ios::out);
+      self->write_to_file();
+};
+
+void File_io::save_file() {
+      if (this->is_temp) {
+            SDL_ShowSaveFileDialog(save_file_callback, this, GUI::window,
+                                   file_filters.data(), 1, nullptr);
+      } else {
+            this->write_to_file();
+      }
+};
+
+void File_io::save_file_as() {};
+
+void File_io::open_file() {};
 
 void File_io::write_to_file() {
       this->file_io_stream.flush();

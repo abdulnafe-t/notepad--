@@ -257,6 +257,14 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             break;
       }
 
+      case SDLK_S: {
+            // Handle save (Ctrl+s)
+            if (SDL_GetModState() & SDL_KMOD_CTRL) {
+                  file.save_file();
+            }
+            break;
+      }
+
       case SDLK_RETURN: {
             file.insert_letter('\n');
             GUI::cursor.set_row(GUI::cursor.get_row() + 1);

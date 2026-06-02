@@ -177,6 +177,10 @@ int main() {
             if (ImGui::BeginMainMenuBar()) {
 
                   if (ImGui::BeginMenu("File")) {
+                        if (ImGui::MenuItem("Save", "Ctrl+s")) {
+                              file.save_file();
+                        }
+
                         if (ImGui::MenuItem("Quit", "Esc")) {
                               running = false;
                         }
