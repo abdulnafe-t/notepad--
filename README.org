@@ -7,11 +7,11 @@ navigation and editing actions, and nothing else. Currently, it only supports AS
 
 * Installation
 
-** Make sure you have SDL3 and CMake installed
+** Make sure you have SDL3, clang, and CMake installed
 
 For example, on *Arch:*
 #+begin_src bash
-sudo pacman -S cmake sdl3 sdl3_ttf
+sudo pacman -S sdl3 sdl3_ttf clang cmake
 #+end_src
 
 ** Get the source from this repo
