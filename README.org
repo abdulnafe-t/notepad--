@@ -50,12 +50,13 @@ cmake --build build
 - [ ] implement frame rate limit
 +- [ ] implement undo/redo+
 - [ ] implement scroll-bars
-- [ ] implement opening/saving file
-  - [ ] implement Ctrl+s (save)
-  - [ ] implement Ctrl+o (open)
-  - [ ] implement Ctrl+shift+s (save as)
-- [ ] implement new file
+- [X] implement opening/saving file
+  - [X] implement Ctrl+s (save)
+  - [X] implement Ctrl+o (open)
+  - [X] implement Ctrl+shift+s (save as)
+- [X] implement new file
 - [ ] implement search & replace
+- [ ] highlight entire region when the mark is active
 +- [ ] use system font+
 - [X] use vendored font: Cousine Regular, packaged with Dear ImGui
 - [ ] implement RAII: wrap SDL pointers in a custom class
