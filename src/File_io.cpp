@@ -4,6 +4,7 @@
 #include "Gap_buffer.h"
 
 #include <SDL3/SDL_dialog.h>
+#include <algorithm>
 #include <array>
 #include <cstdio>
 #include <fstream>
@@ -47,10 +48,8 @@ void File_io::read_file_content(std::size_t start_pos, std::size_t end_pos) {
       this->gap_buffer.move_gap(0);
 }
 
-void SDLCALL File_io::save_file_callback(void* userdata, const char* const* filelist,
+void SDLCALL File_io::open_file_callback(void* userdata, const char* const* filelist,
                                          [[maybe_unused]] int filter) {
-
-      auto* self = static_cast<File_io*>(userdata);
 
       if (filelist == nullptr) {
             SDL_Log("An error occured: %s", SDL_GetError());
@@ -63,18 +62,59 @@ void SDLCALL File_io::save_file_callback(void* userdata, const char* const* file
             return;
       }
 
+      auto* self = static_cast<File_io*>(userdata);
+
       SDL_Log("Full path to selected file: '%s'", *filelist);
-      self->filename = *filelist;
       self->file_io_stream.close();
+      self->filename = *filelist;
+      self->file_io_stream.open(self->filename, std::ios::in | std::ios::out);
+      self->reset_gap_buffer();
+      self->read_file_content(0, self->get_filesize());
+      self->is_temp = false;
+};
+
+void File_io::open_file() {
+      SDL_ShowOpenFileDialog(open_file_callback, this, GUI::window, file_filters.data(),
+                             0, nullptr, false);
+};
+
+void File_io::new_file() {
+      this->reset_gap_buffer();
+      this->file_io_stream.close();
+      this->filename = std::tmpnam(nullptr);
+      this->file_io_stream.open(this->filename, std::ios::in | std::ios::out);
+      this->read_file_content(0, this->get_filesize());
+      this->is_temp = true;
+};
+
+void SDLCALL File_io::save_file_callback(void* userdata, const char* const* filelist,
+                                         [[maybe_unused]] int filter) {
+
+      if (filelist == nullptr) {
+            SDL_Log("An error occured: %s", SDL_GetError());
+            return;
+      }
+
+      if (*filelist == nullptr) {
+            SDL_Log("The user did not select any file.");
+            SDL_Log("Most likely, the dialog was canceled.");
+            return;
+      }
+
+      auto* self = static_cast<File_io*>(userdata);
+
+      SDL_Log("Full path to selected file: '%s'", *filelist);
+      self->file_io_stream.close();
+      self->filename = *filelist;
       self->file_io_stream.open(self->filename, std::ios::in | std::ios::out);
       self->write_to_file();
+      self->is_temp = false;
 };
 
 void File_io::save_file() {
       if (this->is_temp) {
             SDL_ShowSaveFileDialog(save_file_callback, this, GUI::window,
                                    file_filters.data(), 1, nullptr);
-            this->is_temp = false;
       } else {
             this->write_to_file();
       }
@@ -83,36 +123,6 @@ void File_io::save_file() {
 void File_io::save_file_as() {
       SDL_ShowSaveFileDialog(save_file_callback, this, GUI::window, file_filters.data(),
                              1, nullptr);
-      this->is_temp = false;
-};
-
-void SDLCALL File_io::open_file_callback(void* userdata, const char* const* filelist,
-                                         [[maybe_unused]] int filter) {
-
-      auto* self = static_cast<File_io*>(userdata);
-
-      if (filelist == nullptr) {
-            SDL_Log("An error occured: %s", SDL_GetError());
-            return;
-      }
-
-      if (*filelist == nullptr) {
-            SDL_Log("The user did not select any file.");
-            SDL_Log("Most likely, the dialog was canceled.");
-            return;
-      }
-
-      SDL_Log("Full path to selected file: '%s'", *filelist);
-      self->filename = *filelist;
-      self->file_io_stream.close();
-      self->file_io_stream.open(self->filename, std::ios::in | std::ios::out);
-      self->read_file_content(0, self->get_filesize());
-};
-
-void File_io::open_file() {
-      SDL_ShowOpenFileDialog(open_file_callback, this, GUI::window, file_filters.data(),
-                             0, nullptr, false);
-      this->is_temp = false;
 };
 
 void File_io::write_to_file() {
@@ -122,6 +132,13 @@ void File_io::write_to_file() {
       this->file_io_stream << this->gap_buffer;
       this->file_io_stream.close();
       this->file_io_stream.open(this->filename, std::ios::in | std::ios::out);
+}
+
+void File_io::reset_gap_buffer() {
+      std::ranges::fill(this->gap_buffer.buffer, '\0');
+      this->gap_buffer.first_empty_char = 0;
+      this->gap_buffer.last_empty_char  = Gap_buffer<char>::gap_size - 1;
+      this->gap_buffer.mark             = std::nullopt;
 }
 
 void File_io::insert_letter(char letter) {

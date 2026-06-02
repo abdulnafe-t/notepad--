@@ -27,9 +27,10 @@ public:
       void read_file_content(std::size_t start_pos, std::size_t end_pos);
       void write_to_file();
 
+      void new_file();
+      void open_file();
       void save_file();
       void save_file_as();
-      void open_file();
 
       /* Since the following  callback functions are member functions, we have to make
        * them static so that their signature will match what SDL expects (i.e. not have an
@@ -58,6 +59,8 @@ public:
 
       void move(int amount);
       void set_mark(std::optional<std::size_t> new_mark);
+
+      void reset_gap_buffer();
 
       std::string get_file_name() const;
       std::string get_text(std::size_t begin = 0, std::size_t end = 0) const;

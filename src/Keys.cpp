@@ -274,6 +274,18 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             if (SDL_GetModState() & SDL_KMOD_CTRL) {
                   file.open_file();
             }
+            GUI::cursor.set_row(0);
+            GUI::cursor.set_column(0);
+            break;
+      }
+
+      case SDLK_N: {
+            // Handle new file (Ctrl+n)
+            if (SDL_GetModState() & SDL_KMOD_CTRL) {
+                  file.new_file();
+            }
+            GUI::cursor.set_row(0);
+            GUI::cursor.set_column(0);
             break;
       }
 

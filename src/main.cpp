@@ -177,6 +177,10 @@ int main() {
             if (ImGui::BeginMainMenuBar()) {
 
                   if (ImGui::BeginMenu("File")) {
+                        if (ImGui::MenuItem("New file", "Ctrl+n")) {
+                              file.new_file();
+                        }
+
                         if (ImGui::MenuItem("Open...", "Ctrl+o")) {
                               file.open_file();
                         }
