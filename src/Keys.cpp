@@ -1,11 +1,11 @@
 #include "Keys.h"
 
+#include "Edit.h"
 #include "GUI.h"
 
 #include <SDL3/SDL_clipboard.h>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_keyboard.h>
-#include <algorithm> // For std::max, std::min
 #include <optional>
 #include <string_view>
 
@@ -204,16 +204,7 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             // Handle copy (Ctrl+C)
             if (std::optional<std::size_t> mark {file.get_mark()};
                 (SDL_GetModState() & SDL_KMOD_CTRL) && (mark)) {
-
-                  std::size_t highlighted_text_beg_index {
-                  std::min(mark.value(), file.get_cursor_position())};
-
-                  std::size_t highlighted_text_end_index {
-                  std::max(mark.value(), file.get_cursor_position())};
-
-                  std::string highlighted_text {
-                  file.get_text(highlighted_text_beg_index, highlighted_text_end_index)};
-                  SDL_SetClipboardText(highlighted_text.c_str());
+                  Edit::copy(mark, file);
             }
             break;
       }
@@ -222,23 +213,7 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             // Handle cut (Ctrl+X)
             if (std::optional<std::size_t> mark {file.get_mark()};
                 (SDL_GetModState() & SDL_KMOD_CTRL) && (mark)) {
-
-                  std::size_t highlighted_text_beg_index {
-                  std::min(mark.value(), file.get_cursor_position())};
-
-                  std::size_t highlighted_text_end_index {
-                  std::max(mark.value(), file.get_cursor_position())};
-
-                  std::string highlighted_text {
-                  file.get_text(highlighted_text_beg_index, highlighted_text_end_index)};
-                  SDL_SetClipboardText(highlighted_text.c_str());
-
-                  if (mark.value() < file.get_cursor_position()) {
-                        file.delete_text_backwards(highlighted_text_beg_index);
-                        GUI::cursor = GUI::mark;
-                  } else {
-                        file.delete_text_forwards(highlighted_text_end_index);
-                  }
+                  Edit::cut(mark, file);
             }
             break;
       }
@@ -246,13 +221,7 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
       case SDLK_V: {
             // Handle paste (Ctrl+V)
             if (SDL_GetModState() & SDL_KMOD_CTRL) {
-                  std::string clip_board_text {SDL_GetClipboardText()};
-                  if (!clip_board_text.empty()) {
-                        Keys::insert_text(clip_board_text, file);
-                  } else {
-                        std::cout << "Failed to paste text! SDL error: " << SDL_GetError()
-                                  << '\n';
-                  }
+                  Edit::paste(file);
             }
             break;
       }

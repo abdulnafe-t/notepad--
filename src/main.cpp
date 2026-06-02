@@ -1,3 +1,4 @@
+#include "Edit.h"
 #include "File_io.h"
 #include "GUI.h"
 #include "Gap_buffer.h"
@@ -196,6 +197,22 @@ int main() {
                         if (ImGui::MenuItem("Quit", "Esc")) {
                               running = false;
                         }
+                        ImGui::EndMenu();
+                  }
+
+                  if (ImGui::BeginMenu("Edit")) {
+                        if (ImGui::MenuItem("Cut", "Ctrl+x")) {
+                              Edit::cut(file.get_mark(), file);
+                        }
+
+                        if (ImGui::MenuItem("Copy", "Ctrl+c")) {
+                              Edit::copy(file.get_mark(), file);
+                        }
+
+                        if (ImGui::MenuItem("Paste", "Ctrl+v")) {
+                              Edit::paste(file);
+                        }
+
                         ImGui::EndMenu();
                   }
                   ImGui::EndMainMenuBar();

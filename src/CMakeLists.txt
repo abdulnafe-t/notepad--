@@ -27,6 +27,8 @@ target_compile_options(imgui PRIVATE -w)
 add_executable(notepad--
   Cursor.cpp
   Cursor.h
+  Edit.cpp
+  Edit.h
   File_io.cpp
   File_io.h
   Gap_buffer.h
