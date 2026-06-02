@@ -104,9 +104,16 @@ void Gap_buffer<T>::insert_new_element(T element) {
             // if current_mark is not std::nullopt, i.e. if the mark is active
             int current_mark_int {static_cast<int>(current_mark.value())};
             int current_gap_end_int {static_cast<int>(this->get_gap_end())};
-            this->grow_gap(current_mark_int - current_gap_end_int - 1);
+            int current_gap_begin_int {static_cast<int>(this->get_gap_begin())};
+
+            if (current_mark_int > current_gap_end_int) {
+                  this->grow_gap(current_mark_int - current_gap_end_int - 1);
+            } else {
+                  this->grow_gap(current_mark_int - current_gap_begin_int);
+            }
             this->set_mark(std::nullopt);
       }
+
       this->buffer[this->first_empty_char++] = element;
 }
 

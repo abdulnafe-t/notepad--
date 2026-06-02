@@ -136,9 +136,8 @@ void File_io::write_to_file() {
 
 void File_io::reset_gap_buffer() {
       std::ranges::fill(this->gap_buffer.buffer, '\0');
-      this->gap_buffer.first_empty_char = 0;
-      this->gap_buffer.last_empty_char  = Gap_buffer<char>::gap_size - 1;
-      this->gap_buffer.mark             = std::nullopt;
+      this->gap_buffer.move_gap(0);
+      this->gap_buffer.mark = std::nullopt;
 }
 
 void File_io::insert_letter(char letter) {
