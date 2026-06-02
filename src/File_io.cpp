@@ -260,3 +260,14 @@ void File_io::delete_text_backwards(std::size_t begin) {
 void File_io::delete_text_forwards(std::size_t end) {
       gap_buffer.grow_gap(static_cast<int>(end - gap_buffer.get_gap_end()));
 }
+
+std::ptrdiff_t File_io::get_last_char_index() const {
+      auto last_non_null {std::ranges::find_last_if(
+      this->gap_buffer.buffer, [](const char& letter) { return letter != '\0'; })};
+
+      return std::distance(this->gap_buffer.buffer.begin(), last_non_null.begin());
+}
+
+int File_io::get_number_of_lines() const {
+      return this->gap_buffer.get_number_of_lines();
+}

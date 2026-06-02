@@ -16,7 +16,7 @@ void Keys::insert_text(std::string_view text, File_io& file) {
       }
       if (std::optional<std::size_t> mark {file.get_mark()}; mark) {
             // The mark is active
-            if (file.get_mark().value() < file.get_cursor_position()) {
+            if (mark.value() < file.get_cursor_position()) {
                   GUI::cursor = GUI::mark;
             }
       }
@@ -255,6 +255,14 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             }
             GUI::cursor.set_row(0);
             GUI::cursor.set_column(0);
+            break;
+      }
+
+      case SDLK_A: {
+            // Handle select all (Ctrl+a)
+            if (SDL_GetModState() & SDL_KMOD_CTRL) {
+                  Edit::select_all(file);
+            }
             break;
       }
 

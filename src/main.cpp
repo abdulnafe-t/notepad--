@@ -213,6 +213,10 @@ int main() {
                               Edit::paste(file);
                         }
 
+                        if (ImGui::MenuItem("Select all", "Ctrl+a")) {
+                              Edit::select_all(file);
+                        }
+
                         ImGui::EndMenu();
                   }
                   ImGui::EndMainMenuBar();

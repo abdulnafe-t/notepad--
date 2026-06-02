@@ -10,6 +10,7 @@ namespace Edit {
       void cut(const std::optional<std::size_t>& mark, File_io& file);
       void copy(const std::optional<std::size_t>& mark, File_io& file);
       void paste(File_io& file);
+      void select_all(File_io& file);
 }
 
 #endif

@@ -73,6 +73,10 @@ public:
 
       bool is_at_last_line() const;
       bool is_at_last_char() const;
+
+      std::ptrdiff_t get_last_char_index() const;
+
+      int get_number_of_lines() const;
 };
 
 static const SDL_DialogFileFilter open_file_filter {.name {"All"}, .pattern {"*"}};

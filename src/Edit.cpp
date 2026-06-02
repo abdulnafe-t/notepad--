@@ -48,3 +48,10 @@ void Edit::paste(File_io& file) {
             std::cout << "Failed to paste text! SDL error: " << SDL_GetError() << '\n';
       }
 };
+
+void Edit::select_all(File_io& file) {
+      file.set_mark(0);
+      file.move(static_cast<int>(file.get_last_char_index()) + 1);
+      GUI::cursor.set_row(file.get_number_of_lines());
+      GUI::cursor.set_column(file.get_line_size(file.get_cursor_position()));
+};

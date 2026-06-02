@@ -37,6 +37,8 @@ public:
       void grow_gap(int amount);
       void set_mark(std::optional<std::size_t> new_mark);
 
+      [[nodiscard]] int get_number_of_lines() const;
+
       [[nodiscard]] std::optional<std::size_t> get_mark() const;
 
       [[nodiscard]] bool is_at_last_line() const;
@@ -252,6 +254,11 @@ bool Gap_buffer<T>::is_at_last_char() const {
       auto last_non_null_index {std::distance(buffer.begin(), last_non_null.begin())};
 
       return (static_cast<std::size_t>(last_non_null_index) < first_empty_char);
+}
+
+template<typename T>
+int Gap_buffer<T>::get_number_of_lines() const {
+      return static_cast<int>(std::count(this->buffer.begin(), this->buffer.end(), '\n'));
 }
 
 template<typename T>
