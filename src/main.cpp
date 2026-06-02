@@ -96,7 +96,7 @@ int main() {
             return 1;
       };
 
-      File_io     file {"/home/scion/Projects/Notepad--/testfile.txt", 1000};
+      File_io     file {};
       std::size_t file_size {file.get_filesize()};
 
       file.read_file_content(0, file_size);

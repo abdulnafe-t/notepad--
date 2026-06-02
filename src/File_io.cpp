@@ -5,16 +5,21 @@
 #include <cstdio>
 #include <fstream>
 
+File_io::File_io()
+  : gap_buffer {Gap_buffer<char>(1000)}
+  , filename {std::tmpnam(nullptr)}
+  , file_io_stream {filename, std::ios::in | std::ios::out} {}
+
 File_io::File_io(const std::string& file_name, std::size_t buffer_size)
   : gap_buffer {Gap_buffer<char>(buffer_size)}
   , filename {file_name}
-  , file_io {file_name, std::ios::in | std::ios::out} {}
+  , file_io_stream {file_name, std::ios::in | std::ios::out} {}
 
 File_io::~File_io() {
-      if (file_io) {
-            this->file_io.flush();
+      if (file_io_stream) {
+            this->file_io_stream.flush();
             this->write_to_file();
-            this->file_io.close();
+            this->file_io_stream.close();
       }
 }
 
@@ -23,11 +28,11 @@ void File_io::read_file_content(std::size_t start_pos, std::size_t end_pos) {
             this->gap_buffer.insert_new_element('\n');
       }
 
-      this->file_io.seekg(static_cast<long>(start_pos), std::ios::beg);
+      this->file_io_stream.seekg(static_cast<long>(start_pos), std::ios::beg);
       for (std::size_t next_char_position {start_pos}; next_char_position < end_pos;
            ++next_char_position) {
             char next;
-            this->file_io >> std::noskipws >> next;
+            this->file_io_stream >> std::noskipws >> next;
 
             this->gap_buffer.insert_new_element(next);
       }
@@ -36,12 +41,12 @@ void File_io::read_file_content(std::size_t start_pos, std::size_t end_pos) {
 }
 
 void File_io::write_to_file() {
-      this->file_io.flush();
-      this->file_io.close();
-      this->file_io.open(this->filename, std::ios::out | std::ios::trunc);
-      this->file_io << this->gap_buffer;
-      this->file_io.close();
-      this->file_io.open(this->filename, std::ios::in | std::ios::out);
+      this->file_io_stream.flush();
+      this->file_io_stream.close();
+      this->file_io_stream.open(this->filename, std::ios::out | std::ios::trunc);
+      this->file_io_stream << this->gap_buffer;
+      this->file_io_stream.close();
+      this->file_io_stream.open(this->filename, std::ios::in | std::ios::out);
 }
 
 void File_io::insert_letter(char letter) {
@@ -117,8 +122,9 @@ void File_io::move(int amount) {
 }
 
 std::size_t File_io::get_filesize() const {
-      std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
-      return static_cast<std::size_t>(in.tellg());
+      std::ifstream           in(filename, std::ifstream::ate | std::ifstream::binary);
+      std::ifstream::pos_type end_position {in.tellg()};
+      return (end_position == -1 ? 0 : static_cast<std::size_t>(end_position));
 }
 
 std::size_t File_io::get_cursor_position() const {

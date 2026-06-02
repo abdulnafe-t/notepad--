@@ -12,19 +12,18 @@ class File_io {
 private:
       Gap_buffer<char> gap_buffer;
       std::string      filename;
-      std::fstream     file_io;
+      std::fstream     file_io_stream;
 
 public:
+      File_io();
+
       File_io(const std::string& file_name, std::size_t buffer_size);
 
       ~File_io();
 
-      // File_io(File_io&)           = delete;
-      // File_io(const File_io&)     = delete;
-      // File_io operator=(File_io&) = delete;
+      void read_file_content(std::size_t start_pos, std::size_t end_pos);
+      void write_to_file();
 
-      void                 read_file_content(std::size_t start_pos, std::size_t end_pos);
-      void                 write_to_file();
       friend std::ostream& operator<<(std::ostream& out, const File_io& file) {
             return out << file.gap_buffer;
       }
