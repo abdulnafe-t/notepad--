@@ -265,6 +265,14 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             break;
       }
 
+      case SDLK_O: {
+            // Handle open (Ctrl+o)
+            if (SDL_GetModState() & SDL_KMOD_CTRL) {
+                  file.open_file();
+            }
+            break;
+      }
+
       case SDLK_RETURN: {
             file.insert_letter('\n');
             GUI::cursor.set_row(GUI::cursor.get_row() + 1);

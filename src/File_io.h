@@ -31,7 +31,13 @@ public:
       void save_file_as();
       void open_file();
 
+      /* Since the following  callback functions are member functions, we have to make
+       * them static so that their signature will match what SDL expects (i.e. not have an
+       * implicit ‘this’ pointer). The ‘this’ pointer is passed in the ‘userdata’ arg.*/
       static void SDLCALL save_file_callback(void* userdata, const char* const* filelist,
+                                             int filter);
+
+      static void SDLCALL open_file_callback(void* userdata, const char* const* filelist,
                                              int filter);
 
       friend std::ostream& operator<<(std::ostream& out, const File_io& file) {

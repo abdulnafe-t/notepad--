@@ -81,7 +81,33 @@ void File_io::save_file() {
 
 void File_io::save_file_as() {};
 
-void File_io::open_file() {};
+void SDLCALL File_io::open_file_callback(void* userdata, const char* const* filelist,
+                                         [[maybe_unused]] int filter) {
+
+      auto* self = static_cast<File_io*>(userdata);
+
+      if (filelist == nullptr) {
+            SDL_Log("An error occured: %s", SDL_GetError());
+            return;
+      }
+
+      if (*filelist == nullptr) {
+            SDL_Log("The user did not select any file.");
+            SDL_Log("Most likely, the dialog was canceled.");
+            return;
+      }
+
+      SDL_Log("Full path to selected file: '%s'", *filelist);
+      self->filename = *filelist;
+      self->file_io_stream.close();
+      self->file_io_stream.open(self->filename, std::ios::in | std::ios::out);
+      self->read_file_content(0, self->get_filesize());
+};
+
+void File_io::open_file() {
+      SDL_ShowOpenFileDialog(open_file_callback, this, GUI::window, file_filters.data(),
+                             1, nullptr, false);
+};
 
 void File_io::write_to_file() {
       this->file_io_stream.flush();
