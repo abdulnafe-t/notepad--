@@ -51,6 +51,10 @@ cmake --build build
 +- [ ] implement undo/redo+
 - [ ] implement scroll-bars
 - [ ] implement opening/saving file
+  - [ ] implement Ctrl+s (save)
+  - [ ] implement Ctrl+o (open)
+  - [ ] implement Ctrl+shift+s (save as)
+- [ ] implement new file
 - [ ] implement search & replace
 +- [ ] use system font+
 - [X] use vendored font: Cousine Regular, packaged with Dear ImGui
