@@ -258,8 +258,12 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
       }
 
       case SDLK_S: {
-            // Handle save (Ctrl+s)
-            if (SDL_GetModState() & SDL_KMOD_CTRL) {
+            if ((SDL_GetModState() & SDL_KMOD_CTRL) &&
+                (SDL_GetModState() & SDL_KMOD_SHIFT)) {
+                  // Handle save as (Ctrl+shift+s)
+                  file.save_file_as();
+            } else if (SDL_GetModState() & SDL_KMOD_CTRL) {
+                  // Handle save (Ctrl+s)
                   file.save_file();
             }
             break;

@@ -74,12 +74,17 @@ void File_io::save_file() {
       if (this->is_temp) {
             SDL_ShowSaveFileDialog(save_file_callback, this, GUI::window,
                                    file_filters.data(), 1, nullptr);
+            this->is_temp = false;
       } else {
             this->write_to_file();
       }
 };
 
-void File_io::save_file_as() {};
+void File_io::save_file_as() {
+      SDL_ShowSaveFileDialog(save_file_callback, this, GUI::window, file_filters.data(),
+                             1, nullptr);
+      this->is_temp = false;
+};
 
 void SDLCALL File_io::open_file_callback(void* userdata, const char* const* filelist,
                                          [[maybe_unused]] int filter) {
@@ -106,7 +111,8 @@ void SDLCALL File_io::open_file_callback(void* userdata, const char* const* file
 
 void File_io::open_file() {
       SDL_ShowOpenFileDialog(open_file_callback, this, GUI::window, file_filters.data(),
-                             1, nullptr, false);
+                             0, nullptr, false);
+      this->is_temp = false;
 };
 
 void File_io::write_to_file() {

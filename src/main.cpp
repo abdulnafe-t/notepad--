@@ -177,12 +177,16 @@ int main() {
             if (ImGui::BeginMainMenuBar()) {
 
                   if (ImGui::BeginMenu("File")) {
-                        if (ImGui::MenuItem("Open", "Ctrl+o")) {
+                        if (ImGui::MenuItem("Open...", "Ctrl+o")) {
                               file.open_file();
                         }
 
                         if (ImGui::MenuItem("Save", "Ctrl+s")) {
                               file.save_file();
+                        }
+
+                        if (ImGui::MenuItem("Save as...", "Ctrl+S")) {
+                              file.save_file_as();
                         }
 
                         if (ImGui::MenuItem("Quit", "Esc")) {
