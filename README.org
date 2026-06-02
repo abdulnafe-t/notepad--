@@ -55,7 +55,7 @@ cmake --build build
   - [X] implement Ctrl+o (open)
   - [X] implement Ctrl+shift+s (save as)
 - [X] implement new file
-- [ ] implement select all
+- [X] implement select all
 - [ ] implement search & replace
 - [ ] highlight entire region when the mark is active
 +- [ ] use system font+
