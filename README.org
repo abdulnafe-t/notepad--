@@ -47,7 +47,7 @@ cmake --build build
     - [X] implement C-c
     - [X] implement C-v
     - [X] implement C-x
-- [ ] implement frame rate limit
+- [X] implement frame rate limit
 +- [ ] implement undo/redo+
 - [ ] implement scroll-bars
 - [X] implement opening/saving file

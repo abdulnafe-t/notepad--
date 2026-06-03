@@ -29,6 +29,8 @@ bool init() {
             return false;
       }
 
+      SDL_SetRenderVSync(GUI::renderer, 1);
+
       IMGUI_CHECKVERSION();
       ImGui::CreateContext();
       ImGui_ImplSDL3_InitForSDLRenderer(GUI::window, GUI::renderer);
