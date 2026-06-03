@@ -6,6 +6,7 @@
 #include <SDL3/SDL_clipboard.h>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_keyboard.h>
+#include <algorithm>
 #include <optional>
 #include <string_view>
 
@@ -30,6 +31,31 @@ void Keys::insert_text(std::string_view text, File_io& file) {
                   GUI::cursor.set_column(GUI::cursor.get_column() + 1);
             }
       }
+
+      Keys::scroll_maybe(GUI::cursor, GUI::camera);
+}
+
+void Keys::scroll_maybe(Cursor& cursor, SDL_Rect& camera) {
+      int cursor_px_x = cursor.get_column() * GUI::advance;
+      int cursor_px_y = cursor.get_row() * GUI::font_height;
+
+      if (cursor_px_x >= camera.w) {
+            camera.x += GUI::x_scrolling_step;
+            cursor.set_column(cursor.get_column() - GUI::scrolling_multiplier);
+      } else if (cursor_px_x < camera.x) {
+            camera.x -= GUI::x_scrolling_step;
+      }
+
+      camera.x = std::max(camera.x, 0);
+
+      if (cursor_px_y >= camera.h - GUI::font_height) {
+            camera.y += GUI::y_scrolling_step;
+            cursor.set_row(cursor.get_row() - GUI::scrolling_multiplier);
+      } else if (cursor_px_y < camera.y) {
+            camera.y -= GUI::y_scrolling_step;
+      }
+
+      camera.y = std::max(camera.y, 0);
 }
 
 bool Keys::handle_key(SDL_Event e, File_io& file) {
@@ -58,6 +84,7 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             file.backwards_delete_letter();
             GUI::cursor.set_column((GUI::cursor.get_column() - 1));
 
+            Keys::scroll_maybe(GUI::cursor, GUI::camera);
             break;
       }
 
@@ -92,6 +119,9 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
                   break;
             }
             GUI::cursor.set_column((GUI::cursor.get_column() - 1));
+
+            Keys::scroll_maybe(GUI::cursor, GUI::camera);
+
             break;
       }
 
@@ -122,6 +152,9 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
 
             GUI::cursor.set_column((GUI::cursor.get_column() + 1));
             file.move(1);
+
+            Keys::scroll_maybe(GUI::cursor, GUI::camera);
+
             break;
       }
 
@@ -159,6 +192,9 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             }
 
             GUI::cursor.set_row(GUI::cursor.get_row() - 1);
+
+            Keys::scroll_maybe(GUI::cursor, GUI::camera);
+
             break;
       }
 
@@ -200,6 +236,9 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             }
 
             GUI::cursor.set_row(GUI::cursor.get_row() + 1);
+
+            Keys::scroll_maybe(GUI::cursor, GUI::camera);
+
             break;
       }
 
@@ -209,6 +248,9 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
                 (SDL_GetModState() & SDL_KMOD_CTRL) && (mark)) {
                   Edit::copy(mark, file);
             }
+
+            Keys::scroll_maybe(GUI::cursor, GUI::camera);
+
             break;
       }
 
@@ -218,6 +260,9 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
                 (SDL_GetModState() & SDL_KMOD_CTRL) && (mark)) {
                   Edit::cut(mark, file);
             }
+
+            Keys::scroll_maybe(GUI::cursor, GUI::camera);
+
             break;
       }
 
@@ -226,6 +271,9 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             if (SDL_GetModState() & SDL_KMOD_CTRL) {
                   Edit::paste(file);
             }
+
+            Keys::scroll_maybe(GUI::cursor, GUI::camera);
+
             break;
       }
 
@@ -248,6 +296,10 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             }
             GUI::cursor.set_row(0);
             GUI::cursor.set_column(0);
+
+            GUI::camera.x = 0;
+            GUI::camera.y = 0;
+
             break;
       }
 
@@ -258,6 +310,9 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             }
             GUI::cursor.set_row(0);
             GUI::cursor.set_column(0);
+
+            GUI::camera.x = 0;
+            GUI::camera.y = 0;
             break;
       }
 
@@ -266,18 +321,23 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             if (SDL_GetModState() & SDL_KMOD_CTRL) {
                   Edit::select_all(file);
             }
+
             break;
       }
 
       case SDLK_RETURN: {
-            file.insert_letter('\n');
-            GUI::cursor.set_row(GUI::cursor.get_row() + 1);
-            GUI::cursor.set_column(0);
+
+            Keys::insert_text("\n", file);
+            Keys::scroll_maybe(GUI::cursor, GUI::camera);
+
             break;
       }
 
       case SDLK_DELETE: {
             file.forwards_delete_char();
+
+            Keys::scroll_maybe(GUI::cursor, GUI::camera);
+
             break;
       }
       }

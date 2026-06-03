@@ -12,6 +12,7 @@
 #include <SDL3/SDL_keyboard.h>
 #include <SDL3/SDL_main.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <algorithm>
 #include <string>
 
 bool init() {
@@ -65,6 +66,9 @@ bool init() {
       GUI::mark.set_width(static_cast<float>(GUI::advance));
       GUI::mark.set_height(static_cast<float>(GUI::font_height));
 
+      GUI::x_scrolling_step = GUI::scrolling_multiplier * GUI::advance;
+      GUI::y_scrolling_step = GUI::scrolling_multiplier * GUI::font_height;
+
       return true;
 }
 
@@ -106,7 +110,8 @@ int main() {
 
       file.read_file_content(0, file_size);
 
-      float    main_menu_size {(GUI::main_menu_padding) + GUI::font_size_px};
+      float main_menu_size {(GUI::main_menu_padding) + GUI::font_size_px};
+
       SDL_Rect input_area {.x = 0,
                            .y = static_cast<int>(main_menu_size),
                            .w = GUI::window_width,
@@ -146,10 +151,16 @@ int main() {
       SDL_RenderTexture(GUI::renderer, GUI::texture, nullptr, &text_area);
       SDL_RenderPresent(GUI::renderer);
 
+      SDL_FRect srcrect {};
+      SDL_FRect destrect {};
+
       while (running) {
             SDL_Event event;
 
             SDL_GetWindowSize(GUI::window, &GUI::window_width, &GUI::window_height);
+
+            GUI::camera.w = GUI::window_width;
+            GUI::camera.h = GUI::window_height - static_cast<int>(main_menu_size);
 
             while (SDL_PollEvent(&event)) {
                   ImGui_ImplSDL3_ProcessEvent(&event);
@@ -256,8 +267,22 @@ int main() {
             }
 
             SDL_GetTextureSize(GUI::texture, &text_w, &text_h);
-            text_area = {.x = 0, .y = main_menu_size, .w = text_w, .h = text_h};
-            SDL_RenderTexture(GUI::renderer, GUI::texture, nullptr, &text_area);
+
+            srcrect.x = static_cast<float>(GUI::camera.x);
+            srcrect.y = static_cast<float>(GUI::camera.y);
+            srcrect.w =
+            std::min(text_w - srcrect.x, static_cast<float>(GUI::window_width));
+            srcrect.h =
+            std::min(text_h - srcrect.y, static_cast<float>(GUI::window_height));
+
+            srcrect.w = std::max(srcrect.w, 0.0f);
+            srcrect.h = std::max(srcrect.h, 0.0f);
+
+            destrect   = srcrect;
+            destrect.x = 0;
+            destrect.y = main_menu_size;
+
+            SDL_RenderTexture(GUI::renderer, GUI::texture, &srcrect, &destrect);
 
             SDL_SetRenderDrawColor(GUI::renderer, 0x00, 0x00, 0x00, 0xFF);
             ImGui::Render();

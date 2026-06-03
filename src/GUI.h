@@ -12,6 +12,8 @@ namespace GUI {
       extern float         font_size_px;
       extern float         main_menu_padding;
       extern int           font_height;
+      extern int           x_scrolling_step;
+      extern int           y_scrolling_step;
       extern int           scrolling_multiplier;
       extern SDL_Window*   window;
       extern SDL_Renderer* renderer;
@@ -26,6 +28,7 @@ namespace GUI {
       extern int           window_height;
       extern int           window_width;
       extern Cursor        mark;
+      extern SDL_Rect      camera;
 }
 
 #endif

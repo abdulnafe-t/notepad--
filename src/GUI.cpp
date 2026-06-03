@@ -5,6 +5,8 @@ namespace GUI {
       float font_size_px {static_cast<float>(font_size * 96.0 / 72.0)};
       float main_menu_padding {4.};
       int   font_height {TTF_GetFontHeight(GUI::font)};
+      int   x_scrolling_step {};
+      int   y_scrolling_step {};
       int   scrolling_multiplier {5};
 
       SDL_Window*   window;
@@ -31,4 +33,6 @@ namespace GUI {
       int window_width {800};
 
       Cursor mark {cursor};
+
+      SDL_Rect camera {.x = 0, .y = 0, .w = window_width, .h = window_height};
 }
