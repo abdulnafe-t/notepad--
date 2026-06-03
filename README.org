@@ -48,8 +48,6 @@ cmake --build build
     - [X] implement C-v
     - [X] implement C-x
 - [X] implement frame rate limit
-+- [ ] implement undo/redo+
-+- [ ] implement scroll-bars+
 - [X] implement text scrolling
 - [X] implement opening/saving file
   - [X] implement Ctrl+s (save)
@@ -57,15 +55,18 @@ cmake --build build
   - [X] implement Ctrl+shift+s (save as)
 - [X] implement new file
 - [X] implement select all
-- [ ] implement search & replace
-- [ ] highlight entire region when the mark is active
-+- [ ] use system font+
 - [X] use vendored font: Cousine Regular, packaged with Dear ImGui
-- [ ] implement RAII: wrap SDL pointers in a custom class
+  
++- [ ] implement scroll-bars+
++- [ ] implement undo/redo+
++- [ ] use system font+
 
-* Long term:
+* Nice to have:
+- [ ] highlight entire region when the mark is active
+- [ ] implement search & replace
 - [ ] light/dark mode switching
-- [ ] smart buffering of larger files
-- [ ] unicode support?
+- [ ] smart buffering of large files
+- [ ] unicode support
 - [ ] emacs-style keybindings
-- [ ] font scale customization
+- [ ] font size customization
+- [ ] implement RAII: wrap SDL pointers in a custom class
