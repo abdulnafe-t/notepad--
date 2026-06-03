@@ -30,29 +30,28 @@ void Keys::insert_text(std::string_view text, File_io& file) {
             } else {
                   GUI::cursor.set_column(GUI::cursor.get_column() + 1);
             }
+            Keys::scroll_maybe(GUI::cursor, GUI::camera);
       }
-
-      Keys::scroll_maybe(GUI::cursor, GUI::camera);
 }
 
-void Keys::scroll_maybe(Cursor& cursor, SDL_Rect& camera) {
+void Keys::scroll_maybe(Cursor& cursor, SDL_Rect& camera, int x_amount, int y_amount) {
       int cursor_px_x = cursor.get_column() * GUI::advance;
       int cursor_px_y = cursor.get_row() * GUI::font_height;
 
       if (cursor_px_x >= camera.w) {
-            camera.x += GUI::x_scrolling_step;
+            camera.x += x_amount;
             cursor.set_column(cursor.get_column() - GUI::scrolling_multiplier);
       } else if (cursor_px_x < camera.x) {
-            camera.x -= GUI::x_scrolling_step;
+            camera.x -= x_amount;
       }
 
       camera.x = std::max(camera.x, 0);
 
       if (cursor_px_y >= camera.h - GUI::font_height) {
-            camera.y += GUI::y_scrolling_step;
+            camera.y += y_amount;
             cursor.set_row(cursor.get_row() - GUI::scrolling_multiplier);
       } else if (cursor_px_y < camera.y) {
-            camera.y -= GUI::y_scrolling_step;
+            camera.y -= y_amount;
       }
 
       camera.y = std::max(camera.y, 0);
@@ -271,8 +270,6 @@ bool Keys::handle_key(SDL_Event e, File_io& file) {
             if (SDL_GetModState() & SDL_KMOD_CTRL) {
                   Edit::paste(file);
             }
-
-            Keys::scroll_maybe(GUI::cursor, GUI::camera);
 
             break;
       }
