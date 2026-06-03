@@ -1,7 +1,7 @@
 #include "GUI.h"
 
 namespace GUI {
-      int   font_size {30};
+      int   font_size {20};
       float font_size_px {static_cast<float>(font_size * 96.0 / 72.0)};
       float main_menu_padding {4.};
 
