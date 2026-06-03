@@ -57,11 +57,13 @@ bool init() {
 
       io.Fonts->AddFontFromFileTTF(GUI::font_path.c_str(), 0.7f * GUI::font_size_px);
 
+      GUI::font_height = TTF_GetFontHeight(GUI::font);
+
       GUI::cursor.set_width(static_cast<float>(GUI::advance));
-      GUI::cursor.set_height(static_cast<float>(TTF_GetFontHeight(GUI::font)));
+      GUI::cursor.set_height(static_cast<float>(GUI::font_height));
 
       GUI::mark.set_width(static_cast<float>(GUI::advance));
-      GUI::mark.set_height(static_cast<float>(TTF_GetFontHeight(GUI::font)));
+      GUI::mark.set_height(static_cast<float>(GUI::font_height));
 
       return true;
 }

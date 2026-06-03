@@ -11,6 +11,8 @@ namespace GUI {
       extern int           font_size;
       extern float         font_size_px;
       extern float         main_menu_padding;
+      extern int           font_height;
+      extern int           scrolling_multiplier;
       extern SDL_Window*   window;
       extern SDL_Renderer* renderer;
       extern SDL_Texture*  texture;
