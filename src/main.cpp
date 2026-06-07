@@ -217,11 +217,15 @@ int main() {
 
                   if (ImGui::BeginMenu("Edit")) {
                         if (ImGui::MenuItem("Cut", "Ctrl+x")) {
-                              Edit::cut(file.get_mark(), file);
+                              if (auto mark {file.get_mark()}; mark) {
+                                    Edit::cut(mark, file);
+                              }
                         }
 
                         if (ImGui::MenuItem("Copy", "Ctrl+c")) {
-                              Edit::copy(file.get_mark(), file);
+                              if (auto mark {file.get_mark()}; mark) {
+                                    Edit::copy(mark, file);
+                              }
                         }
 
                         if (ImGui::MenuItem("Paste", "Ctrl+v")) {
