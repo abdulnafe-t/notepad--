@@ -12,10 +12,10 @@
 
 class File_io {
 private:
-      Gap_buffer<char> gap_buffer;
-      std::string      filename;
-      std::fstream     file_io_stream;
-      bool             is_temp;
+      Gap_buffer   gap_buffer;
+      std::string  filename;
+      std::fstream file_io_stream;
+      bool         is_temp;
 
 public:
       File_io();

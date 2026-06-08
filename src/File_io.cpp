@@ -12,13 +12,13 @@
 #include <string_view>
 
 File_io::File_io()
-  : gap_buffer {Gap_buffer<char>(1000)}
+  : gap_buffer {Gap_buffer(1000)}
   , filename {std::tmpnam(nullptr)}
   , file_io_stream {filename, std::ios::in | std::ios::out}
   , is_temp {true} {}
 
 File_io::File_io(const std::string& file_name, std::size_t buffer_size)
-  : gap_buffer {Gap_buffer<char>(buffer_size)}
+  : gap_buffer {Gap_buffer(buffer_size)}
   , filename {file_name}
   , file_io_stream {file_name, std::ios::in | std::ios::out}
   , is_temp {false} {}

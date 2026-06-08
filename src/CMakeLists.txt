@@ -32,6 +32,7 @@ add_executable(notepad--
   File_io.cpp
   File_io.h
   Gap_buffer.h
+  Gap_buffer.cpp
   GUI.cpp
   GUI.h
   Keys.cpp
