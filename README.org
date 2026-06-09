@@ -6,12 +6,17 @@
 navigation and editing actions, and nothing else. Currently, it only supports ASCII text.
 
 * Installation
+** Make sure you have all the dependencies
+=notepad--= requires git, CMake, SDL3, SDL33_ttf, and a C++ compiler.
 
-** Make sure you have SDL3 and CMake installed
-
-For example, on *Arch:*
+*Arch:*
 #+begin_src bash
-sudo pacman -S cmake sdl3 sdl3_ttf
+sudo pacman -S git cmake sdl3 sdl3_ttf gcc
+#+end_src
+
+*Debian/Ubuntu:*
+#+begin_src bash
+sudo apt install git cmake libsdl3-dev libsdl3-ttf-dev gcc
 #+end_src
 
 ** Get the source from this repo
@@ -19,7 +24,7 @@ sudo pacman -S cmake sdl3 sdl3_ttf
 git clone https://github.com/abdulnafe-t/notepad--
 cd notepad--
 
-# notepad-- uses git submodules for Dear ImGui.
+# notepad-- uses Dear ImGui as a git submodule.
 git submodule init
 git submodule update
 #+end_src
@@ -29,6 +34,8 @@ git submodule update
 cmake -S src -B build
 cmake --build build
 #+end_src
+
+The executable will be under =notepad--/build/=
 
 * TODO:
 - [X] left/right cursor motions
